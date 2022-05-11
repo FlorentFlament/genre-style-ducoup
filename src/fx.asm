@@ -1,3 +1,5 @@
+	INCLUDE "bg_grid.asm"
+
 ;;; Does rough positioning of sprite
 ;;; Argument: Id for the sprite (0 or 1)
 ;;; A : must contain Horizontal position
@@ -43,14 +45,6 @@
 
 ;;; Functions used in main
 fx_init:	SUBROUTINE
-	;; Playfield setup
-	lda #$f0
-	sta PF0
-	lda #$83
-	sta PF1
-	lda #$07
-	sta PF2
-
 	;; Sprites size and color
 	lda #$07
 	sta NUSIZ0
@@ -70,8 +64,10 @@ fx_init:	SUBROUTINE
 	lda #$1
 	sta sprites_dir
 
+	jsr bg_checker_init
 	rts
 
+	ALIGN 256		; Remove later
 fx_vblank:	SUBROUTINE
 	lda sprite0_pos
 	POSITION_SPRITE 0
@@ -81,68 +77,12 @@ fx_vblank:	SUBROUTINE
 	sta HMOVE		; Commit sprites fine tuning
 	rts
 
-	MAC CHOOSE_COLOR
-	;; Choose colors according to bit 5 of Y register
-	tya
-	and #$20
-	beq .even
-.odd:
-	lda #$8a
-	sta COLUBK
-	lda #$9a
-	sta COLUPF
-	bne .color_chosen	; unconditional jump
-.even:
-	lda #$9a
-	sta COLUBK
-	lda #$8a
-	sta COLUPF
-.color_chosen:
-	ENDM
-
-top_bottom_loop:	SUBROUTINE
-	ldx #55
-.loop:
-	sta WSYNC
-	CHOOSE_COLOR
-	lda #$00
-	sta GRP0
-	sta GRP1
-	iny
-	dex
-	bpl .loop
-	rts
-
 fx_kernel:	SUBROUTINE
-	ldy framecnt
-	jsr top_bottom_loop
-
-	ldx #15
-.loop_middle_ext:
-	lda #7
-	sta ptr
-.loop_middle_int:
-	sta WSYNC
-	CHOOSE_COLOR
-	lda sprite0,X
-	sta GRP0
-	lda sprite1,X
-	sta GRP1
-	iny
-	dec ptr
-	bpl .loop_middle_int
-	dex
-	bpl .loop_middle_ext
-
-	jsr top_bottom_loop
-	sta WSYNC
-	lda #$00
-	sta COLUBK
-	sta COLUPF
+	jsr bg_checker_kernel
 	rts
 
 ;;; X must be 0 for sprite0, 1 for sprite1
-update_sprite_position:	SUBROUTINE
+fx_update_sprite_position:	SUBROUTINE
 	cpx sprites_dir
 	beq .sp_right_left
 .sp_left_right:
@@ -160,9 +100,9 @@ fx_overscan:	SUBROUTINE
 
 	;; Updating sprites position
 	ldx #0
-	jsr update_sprite_position
+	jsr fx_update_sprite_position
 	ldx #1
-	jsr update_sprite_position
+	jsr fx_update_sprite_position
 
 	;; Changing sprites directions when on edges
 	lda sprite0_pos
