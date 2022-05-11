@@ -1,16 +1,9 @@
 ;;;;; FX VARS ;;;;;
 
-;;; 1 note per 5 lines band (per channel)
-;;; 240 lines -> 48 notes
-;;; -1 note for space for smooth scrolling
-;;; -2 notes for rasta bands
-STACK_SIZE = 33
+;;; Sprites horizontal position on the screen
+sprite0_pos	DS.B	1
+sprite1_pos	DS.B	1
 
-stack_idx       DS.B    1       ; Stack index for pushing notes
-stack_ikern     DS.B    1       ; Kernel stack index for display
-cur_note_c0     DS.B    1
-cur_note_c1     DS.B    1
-;;; 2 bytes available
-
-stack_c0	DS.B	STACK_SIZE
-stack_c1	DS.B	STACK_SIZE
+;;; if 0: sprite0 moves left to right and sprite1 right to left
+;;; if 1; sprite1 moves left to right and sprite0 right to left
+sprites_dir	DS.B	1
