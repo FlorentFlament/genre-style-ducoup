@@ -1,0 +1,14 @@
+;;; Colors
+GREEN = $56
+
+    IFCONST HARDWARE_COLORS
+YELLOW = $2f
+RED = $44
+    ELSE ; Stella Colors
+YELLOW = $2a
+RED = $66
+    ENDIF
+
+WORM_COL = RED
+LIGHT_GREY = $0e
+DARK_GREY = $06
