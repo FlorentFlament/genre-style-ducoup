@@ -163,3 +163,344 @@ Jérémie Glafouk
 Yes bon app' et bon méditage 🙂
 You sent
 Yesyes, bon ça marche, je vais réfléchir à cette option, ça paraît moins incertain comme rendu
+
+
+
+May 9 at 7:59 PM
+Mon 7:59 PM
+You sent
+Bah le fx avec le fond qui ondule avec un zoom qui se décalé est un touchy
+You sent
+Les rond concentriques, ça peut se faire simplement en utilisant de la rom
+Jérémie
+Jérémie Glafouk
+Une zik en 1Ko rythmée et répétitive, avec des breaks, des fx de fond, 2 "persos" en sprite + un double sprite spécial (genre le final, qui affiche flush) et hop !
+You sent
+Les damiers qui bougent, bah ça dépend comment ils bougent ; )
+You replied to Jérémie
+Original message:
+Une zik en 1Ko rythmée et répétitive, avec des breaks, des fx de fond, 2…
+Ouai, ça peut l'faire ; )
+Jérémie
+Jérémie Glafouk
+Héhéhé bah faut trouver le mpyen qu'ils bougent à "le oins cher possible" comme quand tu cherches un billet de train pour BXL 😛
+You replied to Jérémie
+Original message:
+Héhéhé bah faut trouver le mpyen qu'ils bougent à "le oins cher possible…
+Au fait, t'as vu que t'as un car pour 10balles le trajet ?
+Jérémie
+Jérémie Glafouk
+cercles, damiers, lignes horiz qui "grossissent" faça chewing gum", volets, etc... y'a surement plein de p'tits trucs à trouver à "pas cher" et qui s'ils sont dynamique feront très bien l'taff si ça s'enchaine et que c'est varié... Pis réutilisables en changeant les 2 couleurs donc gain de poids (enfin j'espère)
+Jérémie replied to you
+Original message:
+Au fait, t'as vu que t'as un car pour 10balles le trajet ?
+Jérémie Glafouk
+ouais, mais c'long le car 🙂
+You replied to Jérémie
+Original message:
+ouais, mais c'long le car 🙂
+Ah bah faut pas être trop pressé quoi
+You replied to Jérémie
+Original message:
+cercles, damiers, lignes horiz qui "grossissent" faça chewing gum", vole…
+Mouai, ça se joue
+Jérémie
+Jérémie Glafouk
+un bete effet aussi : que des lignes A/B, mais tu fais venir la 1ere couleur A, puis la suivante, etc, en cascade en partant du haut. Puis pareil avec la couleur B, mais en partant du bas... hop t'as un effet dynamique qui fait volter de "noir à plein" (et donc on peut aussi le faire en sens inverse...
+Jérémie
+*volet
+Jérémie
+Jérémie Glafouk
+un autre : l'ecran coupé par 2 masses horiz A/B, puis du fait juste dandiner/bouger la ligne d'horizon.
+You replied to Jérémie
+Original message:
+un bete effet aussi : que des lignes A/B, mais tu fais venir la 1ere cou…
+Ouai ça peut être cool
+Jérémie
+Jérémie Glafouk
+Ah et si les cercles concentriques qui bougent ça marche, on doit pouvoir le déclirenr avec des carrés concentriques 😛
+You replied to Jérémie
+Original message:
+un autre : l'ecran coupé par 2 masses horiz A/B, puis du fait juste dand…
+Ça se tente, mais j'ai un doute sur le rendu
+Jérémie replied to you
+Original message:
+Ça se tente, mais j'ai un doute sur le rendu
+Jérémie Glafouk
+Bah si ton mouvement est fluide et elastique, ça peut l'faire
+You replied to Jérémie
+Original message:
+Ah et si les cercles concentriques qui bougent ça marche, on doit pouvoi…
+Hehe, et c'est potentielle plus facile. Parceque les cercles ils seront moches..
+You replied to Jérémie
+Original message:
+Bah si ton mouvement est fluide et elastique, ça peut l'faire
+Bin ça sera une ligne qui se déplace de haut en bas, bof..
+Jérémie
+Jérémie Glafouk
+compliqué aussi d'avoir des "boules A" genre en cercle qui tournent sur fond B ?
+Jérémie replied to you
+Original message:
+Bin ça sera une ligne qui se déplace de haut en bas, bof..
+Jérémie Glafouk
+Bah ouais, mais avec les sprites par dessus, le rythme (genre elle bouge sur le kick) et le fait que ça dure pas longremps, ça peu grave le faire... l'idée c'est "que des petits FX mais qui s'enchainent bien"
+You replied to Jérémie
+Original message:
+compliqué aussi d'avoir des "boules A" genre en cercle qui tournent sur fond B ?
+Yes zvolli qu'avait fait un truc comme ça, c'était moche. Tu peux faire peu de ronds
+Jérémie replied to you
+Original message:
+Yes zvolli qu'avait fait un truc comme ça, c'était moche. Tu peux faire peu de ronds
+Jérémie Glafouk
+arf, bon bah des carrés alors 🙂
+You replied to Jérémie
+Original message:
+arf, bon bah des carrés alors 🙂
+C'pareil pour des carrés, la tu vas avoir besoin de plein de sprites
+You replied to Jérémie
+Original message:
+Bah ouais, mais avec les sprites par dessus, le rythme (genre elle bouge…
+Pourquoi pas, à tester
+Jérémie
+Jérémie Glafouk
+et coté figures géométriques qui seraient pas du "pixel" mais codées, pareil, y'a moyen de faire des choses ? Genre une étoile A qui tourne sur fond B ?
+Jérémie replied to you
+Original message:
+C'pareil pour des carrés, la tu vas avoir besoin de plein de sprites
+Arf, bon faut simplifier alors...
+Jérémie
+Jérémie Glafouk
+Mais ouais, j'suis sur que y'a plein (enfin l'en faut genre 8/10) "minis" FX a trouver et décliner en plusieurs couleurs, plusieurs sens, etc
+You replied to Jérémie
+Original message:
+et coté figures géométriques qui seraient pas du "pixel" mais codées, pa…
+Bah les trucs qui tournent ça sera des sprites, donc y'en a 2 ; )
+Jérémie replied to you
+Original message:
+Bah les trucs qui tournent ça sera des sprites, donc y'en a 2 ; )
+Jérémie Glafouk
+ouais c'est mort, faut rester avec des "masses" colorées quoi...
+You replied to Jérémie
+Original message:
+ouais c'est mort, faut rester avec des "masses" colorées quoi...
+Voilà
+You sent
+Allé, je vais servir le manger aux enfants...
+Jérémie
+Bah y'a plus qu'a méditer à 🙂
+Jérémie
+Jérémie Glafouk
+Yes bon app' et bon méditage 🙂
+You sent
+Yesyes, bon ça marche, je vais réfléchir à cette option, ça paraît moins incertain comme rendu
+Yesterday at 12:14 AM
+Tue 12:14 AM
+You sent
+Tiens petit test
+You sent
+Yesterday at 9:22 AM
+Tue 9:22 AM
+Jérémie
+Jérémie Glafouk
+Hé, pas mal...
+You sent
+Tiens, avec des sprites piqués sur le net
+You sent
+You sent
+8x16
+Jérémie
+Jérémie Glafouk
+Un autre fx auquel je pensais : partir de l'écran coupé en 2 A/B avec l'horizon centré, puis créer comme une vague.
+You replied to Jérémie
+Original message:
+Un autre fx auquel je pensais : partir de l'écran coupé en 2 A/B avec l'…
+Pour le coup, c'est assez chaud
+Jérémie
+C'peut aussi se décliner avec des "barres" qui font la vague genre par tranche
+Jérémie
+Jérémie Glafouk
+genre comme un equaliseur visuel
+Jérémie replied to you
+Original message:
+Pour le coup, c'est assez chaud
+Jérémie Glafouk
+Arf, zut...
+You replied to Jérémie
+Original message:
+C'peut aussi se décliner avec des "barres" qui font la vague genre par tranche
+j'y avais pensé hier, mais c'est un peu plus touchy. J'vais y réfléchir si jamais
+Jérémie
+Jérémie Glafouk
+Sinon pour le fx de carrés concentriques qui font "spirale sans fin", 'a aussi l'option : fond A et avec B tu dessines une "spirale carrée" qui se trace au cour du temps...
+You replied to Jérémie
+Original message:
+Sinon pour le fx de carrés concentriques qui font "spirale sans fin", 'a…
+ouai, ca coute assez cher en rom (genre image par image), mais c'est faisable
+You sent
+(en fait, comme les cercles/carres concentriques)
+You sent
+sauf qu'il y a moins d'images pour les cercles / carres
+Jérémie
+Mmmm ouais, faut voir d'abbord ce qui coute le moins...
+Jérémie
+On est forcément en image par image, le code il "interpole" jamais ?
+Jérémie
+Jérémie Glafouk
+Pasque même si le jeu c'est un truc très dynamique mais très court, c'bien d'avoir au moins 8/10 FX à décliner en couleurs.... Que ça fasse pas trop "vide"
+You replied to Jérémie
+Original message:
+On est forcément en image par image, le code il "interpole" jamais ?
+ca depend pour quoi .. Si y'a beaucoup de backgrounds qui se dessinent tout seuls, on peut faire mieux, mais faut stocker le dessin en cours en RAM, et on a pas besoin d'avoir toutes images. Mais du coup, ca coute de la RAM
+You replied to Jérémie
+Original message:
+Pasque même si le jeu c'est un truc très dynamique mais très court, c'bi…
+Oui, sur la vcs y'a pas bcp de resources hein, faut gérer ça au mieux ..
+Jérémie
+Jérémie Glafouk
+En gros lister les idées de FX, trier par "poids", facilité de dev, et voir à mixer genre 6 "faciles" et 4 "compliqués" si ça tiens, avec l'idée de voir ce qu'il reste pour les sprites N&B et leur mouvement (basque) et les 1 Ko de zik.
+You replied to Jérémie
+Original message:
+En gros lister les idées de FX, trier par "poids", facilité de dev, et v…
+basque ?
+Jérémie
+Jérémie Glafouk
+Et se garder un 40x40 final juste pour afficher le titre + flewww/glafouk (le logo flush serait le dernier couple de sprites qui s'affiche)
+Jérémie replied to you
+Original message:
+basque ?
+Jérémie Glafouk
+basIques héhéhé, laissons les bretons, les occitans & coe dans leur coin 🙂
+You replied to Jérémie
+Original message:
+En gros lister les idées de FX, trier par "poids", facilité de dev, et v…
+Tout a fait, en fait en y repensant, les backgrounds qui s'autodessinent ne devraient pas prendre trop de place en ram, en fait ca depend de la taille des carres. En gros, ca occupe autant de bytes en RAM que de lignes à afficher. Pour une resolution 8x8, comme le damier du test, ca prendrai seulement 8 bytes. Pour une resolution 16x16, 16 bytes, etc...
+Jérémie
+Jérémie Glafouk
+Y'a plein de possibles, c'est chouette...
+You sent
+Par contre, la spirale qui s'auto-dessine, une fois dessinée, bah faut switcher  de fx
+You replied to Jérémie
+Original message:
+Et se garder un 40x40 final juste pour afficher le titre + flewww/glafou…
+ouai pourquoi pas.
+Jérémie
+Jérémie Glafouk
+Je viens de remater la Melon, y'a que 3 FX (le chewing gum avec un bg, qu'on peut faire juste avec une ligne horizontale, les cercles qu'on ferait carré, et 4 carrés A/B sur B/A qui bêtement clignotent et changent (facile à faire)) ... et juste du blanc + gros gfx sur 2 breaks de zik...)
+Jérémie
+Jérémie Glafouk
+On doit pouvoir en caser un peu plus, à voir...
+Jérémie replied to you
+Original message:
+Par contre, la spirale qui s'auto-dessine, une fois dessinée, bah faut switcher  de fx
+Jérémie Glafouk
+Bah en cut, si c'est calé sur un beat, ça passe crème
+You replied to Jérémie
+Original message:
+Je viens de remater la Melon, y'a que 3 FX (le chewing gum avec un bg, q…
+Bah les 4 carres qui clignotent, c'est plus facile si c'est 6 sur VCS
+Jérémie replied to you
+Original message:
+Bah les 4 carres qui clignotent, c'est plus facile si c'est 6 sur VCS
+Jérémie Glafouk
+héhéhé, on s'adapte, pas de soucis
+You sent
+6 ou 9 d'ailleurs
+Jérémie
+Jérémie Glafouk
+Peu importe le nombre, ce qui marche c'est le rythme, le choix des 2 couleurs et voilà
+You replied to Jérémie
+Original message:
+Peu importe le nombre, ce qui marche c'est le rythme, le choix des 2 couleurs et voilà
+; ) ouai
+Jérémie
+Clair que si y'a un ou 2 FX un peu "complexes" ça ajoutera d'la plus value... Mais faut voir comment on peut "combler" avec des simples, peu couteux et efficaces dans le rythme...
+Jérémie
+Jérémie Glafouk
+Vraiment la Melon, elle marche et... 3 FX seulemebt 🙂
+You replied to Jérémie
+Original message:
+Clair que si y'a un ou 2 FX un peu "complexes" ça ajoutera d'la plus val…
+d'la plus-value ; ) j'vais commencer avec quelques fxs simples, faire un truc qui marche, et j'verrai pour rajouter des fxs un peu plus complexes
+Jérémie
+Leur idée de séquence "break" est bien efficace aussi, bg blanc, double sprites qui bouge, ça casse le rythme, c'bien trouvé
+Jérémie
+Jérémie Glafouk
+a voir combien de sprites différents on peut caser en rom, m'enfin si ils se répetent, c'pas grave...
+You replied to Jérémie
+Original message:
+Leur idée de séquence "break" est bien efficace aussi, bg blanc, double …
+ouai, c' est vrai, ils sont bons
+Jérémie
+Jérémie Glafouk
+Ouais, voit déjà ce que ça donne les fx "simples" et en fonction, on verra ce qu'on peut ajouter... T'façon, je radote mais, tout est basé sur le rythme... C'est ça qui tient la démo, peu importe les fx
+You replied to Jérémie
+Original message:
+a voir combien de sprites différents on peut caser en rom, m'enfin si il…
+un sprite, c'est 16 bytes, on peu en avoir pleins
+Jérémie
+Jérémie Glafouk
+Oui après, 8 pixels pour du figuratif, c'est chaud... Je pense qu'il faudra mixer des "y'a 2 sprties qui bougent, genre des formes" et y'a qu'un seul sprite (fait de 2) qui visuellement raconte un truc 🙂
+You replied to Jérémie
+Original message:
+Oui après, 8 pixels pour du figuratif, c'est chaud... Je pense qu'il fau…
+Oui, on peut mixer de sprites de 8 et 1 sprite de 16.
+Jérémie
+Jérémie Glafouk
+Et avec un unique écran de fin qui fait titre/credits... on gagne plein de "place" (pas de blabla, de greetz, etc...)
+You replied to Jérémie
+Original message:
+Et avec un unique écran de fin qui fait titre/credits... on gagne plein …
+oui, on verra ca s'trouve il nous restera plein de place ;  )
+Jérémie replied to you
+Original message:
+oui, on verra ca s'trouve il nous restera plein de place ;  )
+Jérémie Glafouk
+ah bah à voir alors pour caser du 40x40 pour les parties "break" 🙂
+You replied to Jérémie
+Original message:
+ah bah à voir alors pour caser du 40x40 pour les parties "break" 🙂
+ouai, alors idealement du 40x30 pour un rapport de formes plus élégant
+Jérémie
+Bon je vais m'atteler à commencer à rédiger la conf, genre en brut sur word (on verra après pour la phase powerpoint/illustrations) je t'envoi le draft quand c'est démoulé
+Jérémie
+Jérémie Glafouk
+c'est ma "mission" du jour 🙂
+You replied to Jérémie
+Original message:
+Bon je vais m'atteler à commencer à rédiger la conf, genre en brut sur w…
+ouh .. bon courage alors .. moi faudrait qu'j'bosse ..
+Jérémie
+Jérémie Glafouk
+Héhé, bah courage aussi (m'enfin si tu peux faire d'la VCS en simulant d'bosser et en étant payé 🙂 )
+You replied to Jérémie
+Original message:
+Héhé, bah courage aussi (m'enfin si tu peux faire d'la VCS en simulant d…
+hehe, j'peux dans une certaine mesure ; )
+Jérémie
+Jérémie Glafouk
+La vita e bella 🙂
+You sent
+Jérémie
+Jérémie Glafouk
+https://www.youtube.com/watch?v=kb9he-EYgg4 pas mal
+You replied to Jérémie
+Original message:
+https://www.youtube.com/watch?v=kb9he-EYgg4 pas mal
+ahah, ouai c'est des gros pixels quoi ; )
+Today at 2:19 PM
+2:19 PM
+Jérémie
+Jérémie
+Jérémie Glafouk
+Tiens de quoi t'occuper au travail... Bon y'a pas de break (encore, faut que j'trouve comment) et c'est pompé à mort sur 113 Tonton du bled 🙂
+Today at 3:34 PM
+3:34 PM
+You sent
+Yop, bon beh TIATracker ne fait plus de son sur ma machine .. je testerai un export plus tard ...
+Today at 7:13 PM
+7:13 PM
+You sent
+Cool c'te zik ! Je plussoie
+You sent
+You sent
+Par contre, j'ai l'impression qu'elle boucle pas, et que ca part en sucette au bout d'un moment
