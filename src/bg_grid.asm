@@ -82,15 +82,15 @@ bg_checker_kernel:	SUBROUTINE
 	cpy #120
 	bcc .even
 .odd:
-	lda #$8a
+	lda bg_6squares_col0
 	sta COLUBK
-	lda #$9a
+	lda bg_6squares_col1
 	sta COLUPF
 	bne .color_chosen	; unconditional jump
 .even:
-	lda #$9a
+	lda bg_6squares_col1
 	sta COLUBK
-	lda #$8a
+	lda bg_6squares_col0
 	sta COLUPF
 .color_chosen:
 	ENDM
@@ -105,6 +105,13 @@ bg_6squares_init:	SUBROUTINE
 	sta PF1
 	lda #$01
 	sta PF2
+	rts
+
+bg_6squares_vblank:	SUBROUTINE
+	lda #$8a
+	sta bg_6squares_col0
+	lda #$9a
+	sta bg_6squares_col1
 	rts
 
 bg_6squares_top_bottom_loop:	SUBROUTINE

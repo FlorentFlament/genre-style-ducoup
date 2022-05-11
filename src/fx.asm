@@ -74,6 +74,8 @@ fx_vblank:	SUBROUTINE
 	POSITION_SPRITE 1
 	sta WSYNC
 	sta HMOVE		; Commit sprites fine tuning
+
+	jsr bg_6squares_vblank
 	rts
 
 fx_kernel:	SUBROUTINE
