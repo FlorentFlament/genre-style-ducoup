@@ -64,10 +64,9 @@ fx_init:	SUBROUTINE
 	lda #$1
 	sta sprites_dir
 
-	jsr bg_checker_init
+	jsr bg_6squares_init
 	rts
 
-	ALIGN 256		; Remove later
 fx_vblank:	SUBROUTINE
 	lda sprite0_pos
 	POSITION_SPRITE 0
@@ -78,7 +77,7 @@ fx_vblank:	SUBROUTINE
 	rts
 
 fx_kernel:	SUBROUTINE
-	jsr bg_checker_kernel
+	jsr bg_6squares_kernel
 	rts
 
 ;;; X must be 0 for sprite0, 1 for sprite1
