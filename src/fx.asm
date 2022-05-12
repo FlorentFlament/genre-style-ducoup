@@ -64,6 +64,11 @@ fx_init:	SUBROUTINE
 	lda #$1
 	sta sprites_dir
 
+	;; Clear bg and pf colors
+	lda #$00
+	sta COLUPF
+	sta COLUBK
+
 	jsr bg_6squares_init
 	rts
 
