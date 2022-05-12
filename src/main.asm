@@ -14,8 +14,9 @@
 
 	echo ""
 	echo "-RAM-"
-framecnt	DS.B	1
-patcnt		DS.B	1
+framecnt	DS.B	1	; Rolling frame counter from 0 to 255
+patcnt		DS.B	1	; Increases every PATTERN_FRAMES frames
+patframe	DS.B	1	; Counts frame with pattern from 0 to PATTERN_FRAMES-1
         INCLUDE "DuBledB_variables.asm"
 ptr = tt_ptr			; Reusing tt_ptr as temporary pointer
 	INCLUDE "variables.asm"
@@ -67,15 +68,13 @@ main_loop:	SUBROUTINE
 	jsr fx_overscan
 
 	inc framecnt
-;;; may be optimized a bit
-;;; Some of it may be interesting to sync fxs with music
-	lda framecnt
-;	cmp #132		; 132 = 24 notes/pattern * (5.5) frames/note
-;	                        ; 5 frames on odd and 6 frames on even patterns
-;	bne .continue
-;	inc patcnt
-;	lda #0
-;	sta framecnt
+	inc patframe
+	lda patframe
+	cmp #PATTERN_FRAMES
+	bne .continue
+	inc patcnt
+	lda #0
+	sta patframe
 .continue:
 	jsr wait_timint
 

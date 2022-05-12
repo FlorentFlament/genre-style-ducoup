@@ -29,7 +29,9 @@ bg_checker_init:	SUBROUTINE
 	sta PF1
 	lda #$07
 	sta PF2
-bg_checker_vblank:	SUBROUTINE
+;;; Empty functions
+bg_checker_vblank:
+bg_checker_overscan:
 	rts
 
 bg_checker_top_bottom_loop:	SUBROUTINE
@@ -87,13 +89,28 @@ bg_6squares_init:	SUBROUTINE
 	sta PF1
 	lda #$01
 	sta PF2
+
+	lda #0
+	sta bg_6squares_cnt
 	rts
 
 bg_6squares_vblank:	SUBROUTINE
+	clc
+	lda bg_6squares_cnt
+	cmp #(QUARTER_PATTERN - 6)
+	bcc .colors1
+.colors0:
 	lda #CHECKER_BG_COL
 	sta bg_6squares_col0
 	lda #CHECKER_PF_COL
 	sta bg_6squares_col1
+	bcs .end		; unconditional
+.colors1:
+	lda #CHECKER_PF_COL
+	sta bg_6squares_col0
+	lda #CHECKER_BG_COL
+	sta bg_6squares_col1
+.end:
 	rts
 
 bg_6squares_top_bottom_loop:	SUBROUTINE
@@ -138,4 +155,14 @@ bg_6squares_kernel:	SUBROUTINE
 	lda #$00
 	sta COLUBK
 	sta COLUPF
+	rts
+
+bg_6squares_overscan:	SUBROUTINE
+	inc bg_6squares_cnt
+	lda bg_6squares_cnt
+	cmp #QUARTER_PATTERN
+	bne .continue
+	lda #0
+	sta bg_6squares_cnt
+.continue:
 	rts

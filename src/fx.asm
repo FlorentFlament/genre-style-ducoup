@@ -102,7 +102,7 @@ fx_update_sprite_position:	SUBROUTINE
 fx_overscan:	SUBROUTINE
 	lda framecnt
 	and #$01
-	beq .end
+	beq .end_update_sprites
 
 	;; Updating sprites position
 	ldx #0
@@ -116,12 +116,13 @@ fx_overscan:	SUBROUTINE
 	beq .change_sprites_dir
 	cmp #99
 	beq .change_sprites_dir
-	bne .end		; inconditional
+	bne .end_update_sprites	; inconditional
 .change_sprites_dir:
 	lda sprites_dir
 	eor #$01
 	sta sprites_dir
-.end:
+.end_update_sprites:
+	jsr bg_6squares_overscan
 	rts
 
 ;;; Sprites ripped from:
