@@ -1,5 +1,19 @@
 	INCLUDE "bg_grid.asm"
 
+; Calls current background
+; unique argument is the address to call (bg_vblanks, bg_kernels, bg_overscans)
+; ex: call_current_background bg_vblanks
+    MAC CALL_CURRENT_BACKGROUND
+	lda current_bg
+	asl
+	tax
+	lda {1}+1,X
+	pha
+	lda {1},X
+	pha
+	rts
+    ENDM
+
 ;;; Does rough positioning of sprite
 ;;; Argument: Id for the sprite (0 or 1)
 ;;; A : must contain Horizontal position
@@ -69,7 +83,9 @@ fx_init:	SUBROUTINE
 	sta COLUPF
 	sta COLUBK
 
-	jsr bg_6squares_init
+	lda #$00
+	sta current_bg
+	CALL_CURRENT_BACKGROUND bg_inits
 	rts
 
 fx_vblank:	SUBROUTINE
@@ -81,11 +97,11 @@ fx_vblank:	SUBROUTINE
 	sta WSYNC
 	sta HMOVE		; Commit sprites fine tuning
 
-	jsr bg_6squares_vblank
+	CALL_CURRENT_BACKGROUND bg_vblanks
 	rts
 
 fx_kernel:	SUBROUTINE
-	jsr bg_6squares_kernel
+	CALL_CURRENT_BACKGROUND bg_kernels
 	rts
 
 ;;; X must be 0 for sprite0, 1 for sprite1
@@ -111,15 +127,26 @@ fx_overscan:	SUBROUTINE
 	jsr fx_update_sprite_position
 .end_update_sprites_positions:
 
-	;; Update sprites directions
+	;; Per pattern chores
 	lda patframe
-	bne .end_update_sprites_directions
+	bne .no_pattern_change
+	;; Update sprites direction
 	lda sprites_dir
 	eor #$01
 	sta sprites_dir
-.end_update_sprites_directions:
+	;; Possibly update background
+	lda patcnt
+	REPEAT 2
+	lsr
+	REPEND
+	and #$01		; 2 backgrounds
+	sta current_bg
+	;; Call background init
+	;; Beware ! called each pattern even if background didn't change
+	CALL_CURRENT_BACKGROUND bg_inits
+.no_pattern_change:
 
-	jsr bg_6squares_overscan
+	CALL_CURRENT_BACKGROUND bg_overscans
 	rts
 
 ;;; Sprites ripped from:
@@ -130,3 +157,19 @@ sprite0:
 sprite1:
 	dc.b $00, $00, $52, $52, $52, $52, $f2, $f2
 	dc.b $f2, $fe, $72, $72, $77, $52, $72, $00
+
+bg_inits:
+	.word bg_checker_init - 1
+	.word bg_6squares_init - 1
+
+bg_vblanks:
+	.word bg_checker_vblank - 1
+	.word bg_6squares_vblank - 1
+
+bg_kernels:
+	.word bg_checker_kernel - 1
+	.word bg_6squares_kernel - 1
+
+bg_overscans:
+	.word bg_checker_overscan - 1
+	.word bg_6squares_overscan - 1

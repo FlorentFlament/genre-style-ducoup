@@ -17,3 +17,5 @@ sprites_dir	DS.B	1
 bg_6squares_col0	DS.B	1
 bg_6squares_col1	DS.B	1
 bg_6squares_cnt		DS.B	1
+
+current_bg		DS.B	1
