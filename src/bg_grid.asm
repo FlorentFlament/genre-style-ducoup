@@ -79,7 +79,7 @@ bg_checker_kernel:	SUBROUTINE
 
 ;;;;;;;;;;; 6 squares code
 
-bg_6squares_init:	SUBROUTINE
+bg_columns_init:	SUBROUTINE
 	;; Playfield setup - 3 columns
 	lda #$1
 	sta CTRLPF
@@ -90,10 +90,10 @@ bg_6squares_init:	SUBROUTINE
 	lda #$01
 	sta PF2
 	lda #0
-	sta bg_6squares_cnt
+	sta bg_columns_cnt
 	rts
 
-bg_6squares_5cols_init:	SUBROUTINE
+bg_columns_5cols_init:	SUBROUTINE
 	;; Playfield setup - 5 columns
 	lda #$1
 	sta CTRLPF
@@ -104,12 +104,12 @@ bg_6squares_5cols_init:	SUBROUTINE
 	lda #$f0
 	sta PF2
 	lda #0
-	sta bg_6squares_cnt
+	sta bg_columns_cnt
 	rts
 
-bg_6squares_fast_vblank:	SUBROUTINE
+bg_columns_fast_vblank:	SUBROUTINE
 	clc
-	lda bg_6squares_cnt
+	lda bg_columns_cnt
 	cmp #(QUARTER_PATTERN - 6)
 	bcs .colors1
 .colors0:
@@ -118,10 +118,10 @@ bg_6squares_fast_vblank:	SUBROUTINE
 .colors1:
 	lda #$01
 .end:
-	sta bg_6squares_col_sw
+	sta bg_columns_col_sw
 	rts
 
-bg_6squares_slow_vblank:	SUBROUTINE
+bg_columns_slow_vblank:	SUBROUTINE
 	clc
 	lda patframe
 	cmp #(PATTERN_FRAMES / 4)
@@ -129,15 +129,15 @@ bg_6squares_slow_vblank:	SUBROUTINE
 	cmp #(3*PATTERN_FRAMES / 4)
 	bne .end
 .switch_colors:
-	lda bg_6squares_col_sw
+	lda bg_columns_col_sw
 	eor #$01
-	sta bg_6squares_col_sw
+	sta bg_columns_col_sw
 .end:
 	rts
 
-bg_6squares_set_standard_colors:	SUBROUTINE
+bg_columns_set_standard_colors:	SUBROUTINE
 	;; Set colors (bg and pf)
-	lda bg_6squares_col_sw
+	lda bg_columns_col_sw
 	sta WSYNC
 	bne .reverse_colors
 	lda #COLUMNS_BG_COL
@@ -153,9 +153,9 @@ bg_6squares_set_standard_colors:	SUBROUTINE
 .end_set_colors:
 	rts
 
-bg_6squares_set_rasta_colors:	SUBROUTINE
+bg_columns_set_rasta_colors:	SUBROUTINE
 	;; Set colors (bg and pf)
-	lda bg_6squares_col_sw
+	lda bg_columns_col_sw
 	sta WSYNC
 	bne .reverse_colors
 	lda #COLUMNS_RASTA_BG_COL
@@ -171,7 +171,7 @@ bg_6squares_set_rasta_colors:	SUBROUTINE
 .end_set_colors:
 	rts
 
-bg_6squares_top_bottom_loop:	SUBROUTINE
+bg_columns_top_bottom_loop:	SUBROUTINE
 	ldx #54			; One more line done in kernel main
 .loop:
 	sta WSYNC
@@ -179,8 +179,8 @@ bg_6squares_top_bottom_loop:	SUBROUTINE
 	bpl .loop
 	rts
 
-bg_6squares_kernel_common:	SUBROUTINE
-	jsr bg_6squares_top_bottom_loop
+bg_columns_kernel_common:	SUBROUTINE
+	jsr bg_columns_top_bottom_loop
 
 	ldx #15
 .loop_middle_ext:
@@ -201,7 +201,7 @@ bg_6squares_kernel_common:	SUBROUTINE
 	lda #$00
 	sta GRP0
 	sta GRP1
-	jsr bg_6squares_top_bottom_loop
+	jsr bg_columns_top_bottom_loop
 
 	sta WSYNC
 	lda #$00
@@ -209,22 +209,22 @@ bg_6squares_kernel_common:	SUBROUTINE
 	sta COLUPF
 	rts
 
-bg_6squares_standard_kernel:	SUBROUTINE
-	jsr bg_6squares_set_standard_colors
-	jsr bg_6squares_kernel_common
+bg_columns_standard_kernel:	SUBROUTINE
+	jsr bg_columns_set_standard_colors
+	jsr bg_columns_kernel_common
 	rts
 
-bg_6squares_rasta_kernel:	SUBROUTINE
-	jsr bg_6squares_set_rasta_colors
-	jsr bg_6squares_kernel_common
+bg_columns_rasta_kernel:	SUBROUTINE
+	jsr bg_columns_set_rasta_colors
+	jsr bg_columns_kernel_common
 	rts
 
-bg_6squares_overscan:	SUBROUTINE
-	inc bg_6squares_cnt
-	lda bg_6squares_cnt
+bg_columns_overscan:	SUBROUTINE
+	inc bg_columns_cnt
+	lda bg_columns_cnt
 	cmp #QUARTER_PATTERN
 	bne .continue
 	lda #0
-	sta bg_6squares_cnt
+	sta bg_columns_cnt
 .continue:
 	rts

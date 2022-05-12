@@ -160,24 +160,24 @@ sprite1:
 
 bg_inits:
 	.word bg_checker_init - 1
-	.word bg_6squares_5cols_init - 1
+	.word bg_columns_5cols_init - 1
 	.word bg_checker_init - 1
-	.word bg_6squares_init - 1
+	.word bg_columns_init - 1
 
 bg_vblanks:
 	.word bg_checker_vblank - 1
-	.word bg_6squares_slow_vblank - 1
+	.word bg_columns_slow_vblank - 1
 	.word bg_checker_vblank - 1
-	.word bg_6squares_fast_vblank - 1
+	.word bg_columns_fast_vblank - 1
 
 bg_kernels:
 	.word bg_checker_kernel - 1
-	.word bg_6squares_rasta_kernel - 1
+	.word bg_columns_rasta_kernel - 1
 	.word bg_checker_kernel - 1
-	.word bg_6squares_standard_kernel - 1
+	.word bg_columns_standard_kernel - 1
 
 bg_overscans:
 	.word bg_checker_overscan - 1
-	.word bg_6squares_overscan - 1
+	.word bg_columns_overscan - 1
 	.word bg_checker_overscan - 1
-	.word bg_6squares_overscan - 1
+	.word bg_columns_overscan - 1
