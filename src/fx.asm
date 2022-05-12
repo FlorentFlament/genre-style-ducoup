@@ -172,9 +172,9 @@ bg_vblanks:
 
 bg_kernels:
 	.word bg_checker_kernel - 1
-	.word bg_columns_rasta_kernel - 1
+	.word bg_columns_kernel - 1
 	.word bg_checker_kernel - 1
-	.word bg_columns_standard_kernel - 1
+	.word bg_columns_kernel - 1
 
 bg_overscans:
 	.word bg_checker_overscan - 1

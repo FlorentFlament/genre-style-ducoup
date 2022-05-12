@@ -18,6 +18,8 @@ sprite1_pos	DS.B	1
 ;;; if 1; sprite1 moves left to right and sprite0 right to left
 sprites_dir	DS.B	1
 
+bg_columns_col_bg	DS.B	1
+bg_columns_col_pf	DS.B	1
 ;;; Colors switch 0 normal colors, 1 reversed colors
 bg_columns_col_sw	DS.B	1
 bg_columns_cnt		DS.B	1
