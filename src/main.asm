@@ -65,8 +65,8 @@ main_loop:	SUBROUTINE
 	; 26 Overscan lines
 	lda #22			; (/ (* 26.0 76) 64) = 30.875
 	sta TIM64T
-	jsr fx_overscan
 
+	;; Update counters
 	inc framecnt
 	inc patframe
 	lda patframe
@@ -76,6 +76,9 @@ main_loop:	SUBROUTINE
 	lda #0
 	sta patframe
 .continue:
+	;; Then call FX overscan (with new counters values)
+	jsr fx_overscan
+
 	jsr wait_timint
 
 	jmp main_loop		; main_loop is far - scanline 308 - cycle 15

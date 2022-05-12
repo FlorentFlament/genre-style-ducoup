@@ -73,6 +73,7 @@ fx_init:	SUBROUTINE
 	rts
 
 fx_vblank:	SUBROUTINE
+	;; Position sprites
 	lda sprite0_pos
 	POSITION_SPRITE 0
 	lda sprite1_pos
@@ -100,28 +101,24 @@ fx_update_sprite_position:	SUBROUTINE
 	rts
 
 fx_overscan:	SUBROUTINE
+	;; Update sprites positions
 	lda framecnt
 	and #$01
-	beq .end_update_sprites
-
-	;; Updating sprites position
+	beq .end_update_sprites_positions
 	ldx #0
 	jsr fx_update_sprite_position
 	ldx #1
 	jsr fx_update_sprite_position
+.end_update_sprites_positions:
 
-	;; Changing sprites directions when on edges
-	lda sprite0_pos
-	cmp #33
-	beq .change_sprites_dir
-	cmp #99
-	beq .change_sprites_dir
-	bne .end_update_sprites	; inconditional
-.change_sprites_dir:
+	;; Update sprites directions
+	lda patframe
+	bne .end_update_sprites_directions
 	lda sprites_dir
 	eor #$01
 	sta sprites_dir
-.end_update_sprites:
+.end_update_sprites_directions:
+
 	jsr bg_6squares_overscan
 	rts
 
