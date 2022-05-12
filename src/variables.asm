@@ -1,4 +1,6 @@
 ;;;;; FX VARS ;;;;;
+CHECKER_BG_COL = $88 		; pink
+CHECKER_PF_COL = $98		; cyan
 
 ;;; Sprites horizontal position on the screen
 sprite0_pos	DS.B	1

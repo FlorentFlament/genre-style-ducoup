@@ -6,15 +6,15 @@
 	and #$20
 	beq .even
 .odd:
-	lda #$8a
+	lda #CHECKER_BG_COL
 	sta COLUBK
-	lda #$9a
+	lda #CHECKER_PF_COL
 	sta COLUPF
 	bne .color_chosen	; unconditional jump
 .even:
-	lda #$9a
+	lda #CHECKER_PF_COL
 	sta COLUBK
-	lda #$8a
+	lda #CHECKER_BG_COL
 	sta COLUPF
 .color_chosen:
 	ENDM
@@ -29,8 +29,6 @@ bg_checker_init:	SUBROUTINE
 	sta PF1
 	lda #$07
 	sta PF2
-	rts
-
 bg_checker_vblank:	SUBROUTINE
 	rts
 
@@ -92,9 +90,9 @@ bg_6squares_init:	SUBROUTINE
 	rts
 
 bg_6squares_vblank:	SUBROUTINE
-	lda #$8a
+	lda #CHECKER_BG_COL
 	sta bg_6squares_col0
-	lda #$9a
+	lda #CHECKER_PF_COL
 	sta bg_6squares_col1
 	rts
 
