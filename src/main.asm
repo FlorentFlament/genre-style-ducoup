@@ -20,7 +20,7 @@ patframe	DS.B	1	; Counts frame with pattern from 0 to PATTERN_FRAMES-1
         INCLUDE "DuBledB_variables.asm"
 ptr = tt_ptr			; Reusing tt_ptr as temporary pointer
 	INCLUDE "variables.asm"
-        echo "Used RAM:", (*)d, "bytes"
+        echo "Used RAM:", (* - $0080)d, "bytes"
 
 ;;;-----------------------------------------------------------------------------
 ;;; Code segment
