@@ -160,13 +160,13 @@ sprite1:
 
 bg_inits:
 	.word bg_checker_init - 1
-	.word bg_6squares_init - 1
+	.word bg_6squares_5cols_init - 1
 	.word bg_checker_init - 1
 	.word bg_6squares_init - 1
 
 bg_vblanks:
 	.word bg_checker_vblank - 1
-	.word bg_6squares_bis_vblank - 1
+	.word bg_6squares_slow_vblank - 1
 	.word bg_checker_vblank - 1
 	.word bg_6squares_vblank - 1
 

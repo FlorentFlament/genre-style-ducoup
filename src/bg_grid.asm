@@ -89,7 +89,20 @@ bg_6squares_init:	SUBROUTINE
 	sta PF1
 	lda #$01
 	sta PF2
+	lda #0
+	sta bg_6squares_cnt
+	rts
 
+bg_6squares_5cols_init:	SUBROUTINE
+	;; Playfield setup
+	lda #$1
+	sta CTRLPF
+	lda #$f0
+	sta PF0
+	lda #$f0
+	sta PF1
+	lda #$f0
+	sta PF2
 	lda #0
 	sta bg_6squares_cnt
 	rts
@@ -106,31 +119,7 @@ bg_6squares_vblank:	SUBROUTINE
 	lda #$01
 .end:
 	sta bg_6squares_col_sw
-	rts
 
-bg_6squares_bis_vblank:	SUBROUTINE
-	clc
-	lda patframe
-	cmp #(PATTERN_FRAMES / 4)
-	beq .switch_colors
-	cmp #(3*PATTERN_FRAMES / 4)
-	bne .end
-.switch_colors:	
-	lda bg_6squares_col_sw
-	eor #$01
-	sta bg_6squares_col_sw
-.end:
-	rts
-
-bg_6squares_top_bottom_loop:	SUBROUTINE
-	ldx #54			; One more line done in kernel main
-.loop:
-	sta WSYNC
-	dex
-	bpl .loop
-	rts
-
-bg_6squares_kernel:	SUBROUTINE
 	;; Set colors (bg and pf)
 	lda bg_6squares_col_sw
 	sta WSYNC
@@ -146,7 +135,47 @@ bg_6squares_kernel:	SUBROUTINE
 	lda #COLUMNS_BG_COL
 	sta COLUPF
 .end_set_colors:
+	rts
 
+bg_6squares_slow_vblank:	SUBROUTINE
+	clc
+	lda patframe
+	cmp #(PATTERN_FRAMES / 4)
+	beq .switch_colors
+	cmp #(3*PATTERN_FRAMES / 4)
+	bne .end
+.switch_colors:
+	lda bg_6squares_col_sw
+	eor #$01
+	sta bg_6squares_col_sw
+.end:
+
+	;; Set colors (bg and pf)
+	lda bg_6squares_col_sw
+	sta WSYNC
+	bne .reverse_colors
+	lda #COLUMNS_BIS_BG_COL
+	sta COLUBK
+	lda #COLUMNS_BIS_PF_COL
+	sta COLUPF
+	bne .end_set_colors	; unconditional - shouldn't have black color
+.reverse_colors:
+	lda #COLUMNS_BIS_PF_COL
+	sta COLUBK
+	lda #COLUMNS_BIS_BG_COL
+	sta COLUPF
+.end_set_colors:
+	rts
+
+bg_6squares_top_bottom_loop:	SUBROUTINE
+	ldx #54			; One more line done in kernel main
+.loop:
+	sta WSYNC
+	dex
+	bpl .loop
+	rts
+
+bg_6squares_kernel:	SUBROUTINE
 	jsr bg_6squares_top_bottom_loop
 
 	ldx #15

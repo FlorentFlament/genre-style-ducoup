@@ -7,6 +7,8 @@ CHECKER_BG_COL = $88 		; pink
 CHECKER_PF_COL = $98		; cyan
 COLUMNS_BG_COL = $68 		; red
 COLUMNS_PF_COL = $b8		; yellow
+COLUMNS_BIS_BG_COL = $2c 		; yellow
+COLUMNS_BIS_PF_COL = $56		; green
 
 ;;; Sprites horizontal position on the screen
 sprite0_pos	DS.B	1
