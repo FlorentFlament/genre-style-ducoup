@@ -139,7 +139,7 @@ fx_overscan:	SUBROUTINE
 	REPEAT 2
 	lsr
 	REPEND
-	and #$01		; 2 backgrounds
+	and #$03		; 4 backgrounds
 	sta current_bg
 	;; Call background init
 	;; Beware ! called each pattern even if background didn't change
@@ -161,15 +161,23 @@ sprite1:
 bg_inits:
 	.word bg_checker_init - 1
 	.word bg_6squares_init - 1
+	.word bg_checker_init - 1
+	.word bg_6squares_init - 1
 
 bg_vblanks:
+	.word bg_checker_vblank - 1
+	.word bg_6squares_bis_vblank - 1
 	.word bg_checker_vblank - 1
 	.word bg_6squares_vblank - 1
 
 bg_kernels:
 	.word bg_checker_kernel - 1
 	.word bg_6squares_kernel - 1
+	.word bg_checker_kernel - 1
+	.word bg_6squares_kernel - 1
 
 bg_overscans:
+	.word bg_checker_overscan - 1
+	.word bg_6squares_overscan - 1
 	.word bg_checker_overscan - 1
 	.word bg_6squares_overscan - 1

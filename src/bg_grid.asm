@@ -110,16 +110,16 @@ bg_6squares_vblank:	SUBROUTINE
 
 bg_6squares_bis_vblank:	SUBROUTINE
 	clc
-	lda bg_6squares_cnt
-	cmp #(QUARTER_PATTERN - 6)
-	bcs .colors1
-.colors0:
-	lda #$00
-	bcc .end		; unconditional
-.colors1:
-	lda #$01
-.end:
+	lda patframe
+	cmp #(PATTERN_FRAMES / 4)
+	beq .switch_colors
+	cmp #(3*PATTERN_FRAMES / 4)
+	bne .end
+.switch_colors:	
+	lda bg_6squares_col_sw
+	eor #$01
 	sta bg_6squares_col_sw
+.end:
 	rts
 
 bg_6squares_top_bottom_loop:	SUBROUTINE
