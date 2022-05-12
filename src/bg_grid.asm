@@ -98,19 +98,28 @@ bg_6squares_vblank:	SUBROUTINE
 	clc
 	lda bg_6squares_cnt
 	cmp #(QUARTER_PATTERN - 6)
-	bcc .colors1
+	bcs .colors1
 .colors0:
-	lda #COLUMNS_BG_COL
-	sta bg_6squares_col0
-	lda #COLUMNS_PF_COL
-	sta bg_6squares_col1
-	bcs .end		; unconditional
+	lda #$00
+	bcc .end		; unconditional
 .colors1:
-	lda #COLUMNS_PF_COL
-	sta bg_6squares_col0
-	lda #COLUMNS_BG_COL
-	sta bg_6squares_col1
+	lda #$01
 .end:
+	sta bg_6squares_col_sw
+	rts
+
+bg_6squares_bis_vblank:	SUBROUTINE
+	clc
+	lda bg_6squares_cnt
+	cmp #(QUARTER_PATTERN - 6)
+	bcs .colors1
+.colors0:
+	lda #$00
+	bcc .end		; unconditional
+.colors1:
+	lda #$01
+.end:
+	sta bg_6squares_col_sw
 	rts
 
 bg_6squares_top_bottom_loop:	SUBROUTINE
@@ -123,11 +132,21 @@ bg_6squares_top_bottom_loop:	SUBROUTINE
 
 bg_6squares_kernel:	SUBROUTINE
 	;; Set colors (bg and pf)
+	lda bg_6squares_col_sw
 	sta WSYNC
-	lda bg_6squares_col0
+	bne .reverse_colors
+	lda #COLUMNS_BG_COL
 	sta COLUBK
-	lda bg_6squares_col1
+	lda #COLUMNS_PF_COL
 	sta COLUPF
+	bne .end_set_colors	; unconditional - shouldn't have black color
+.reverse_colors:
+	lda #COLUMNS_PF_COL
+	sta COLUBK
+	lda #COLUMNS_BG_COL
+	sta COLUPF
+.end_set_colors:
+
 	jsr bg_6squares_top_bottom_loop
 
 	ldx #15
