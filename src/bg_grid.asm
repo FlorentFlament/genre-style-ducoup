@@ -100,15 +100,15 @@ bg_6squares_vblank:	SUBROUTINE
 	cmp #(QUARTER_PATTERN - 6)
 	bcc .colors1
 .colors0:
-	lda #CHECKER_BG_COL
+	lda #COLUMNS_BG_COL
 	sta bg_6squares_col0
-	lda #CHECKER_PF_COL
+	lda #COLUMNS_PF_COL
 	sta bg_6squares_col1
 	bcs .end		; unconditional
 .colors1:
-	lda #CHECKER_PF_COL
+	lda #COLUMNS_PF_COL
 	sta bg_6squares_col0
-	lda #CHECKER_BG_COL
+	lda #COLUMNS_BG_COL
 	sta bg_6squares_col1
 .end:
 	rts
