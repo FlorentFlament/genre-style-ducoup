@@ -3,8 +3,8 @@ PATTERN_FRAMES = 132		; 132 = 24 notes/pattern * (5.5) frames/note
 	                        ; 5 frames on odd and 6 frames on even patterns
 QUARTER_PATTERN = (PATTERN_FRAMES / 4)
 
-CHECKER_BG_COL = $88 		; pink
-CHECKER_PF_COL = $98		; cyan
+GRID_BG_COL = $88 		; pink
+GRID_PF_COL = $98		; cyan
 COLUMNS_BG_COL = $68 		; red
 COLUMNS_PF_COL = $b8		; yellow
 COLUMNS_RASTA_BG_COL = $2c 		; yellow

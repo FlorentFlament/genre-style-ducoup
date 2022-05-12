@@ -1,4 +1,5 @@
 	INCLUDE "bg_grid.asm"
+	INCLUDE "bg_columns.asm"
 
 ; Calls current background
 ; unique argument is the address to call (bg_vblanks, bg_kernels, bg_overscans)
@@ -159,25 +160,25 @@ sprite1:
 	dc.b $f2, $fe, $72, $72, $77, $52, $72, $00
 
 bg_inits:
-	.word bg_checker_init - 1
-	.word bg_columns_5cols_init - 1
-	.word bg_checker_init - 1
-	.word bg_columns_init - 1
+	.word bg_grid_init - 1
+	.word bg_columns_rasta_init - 1
+	.word bg_grid_init - 1
+	.word bg_columns_std_init - 1
 
 bg_vblanks:
-	.word bg_checker_vblank - 1
+	.word bg_grid_vblank - 1
 	.word bg_columns_slow_vblank - 1
-	.word bg_checker_vblank - 1
+	.word bg_grid_vblank - 1
 	.word bg_columns_fast_vblank - 1
 
 bg_kernels:
-	.word bg_checker_kernel - 1
+	.word bg_grid_kernel - 1
 	.word bg_columns_kernel - 1
-	.word bg_checker_kernel - 1
+	.word bg_grid_kernel - 1
 	.word bg_columns_kernel - 1
 
 bg_overscans:
-	.word bg_checker_overscan - 1
+	.word bg_grid_overscan - 1
 	.word bg_columns_overscan - 1
-	.word bg_checker_overscan - 1
+	.word bg_grid_overscan - 1
 	.word bg_columns_overscan - 1

@@ -1,25 +1,23 @@
-;;;;;;;;;; Checker Code
-
-	MAC BG_CHECKER_CHOOSE_COLOR
+	MAC BG_GRID_CHOOSE_COLOR
 	;; Choose colors according to bit 5 of Y register
 	tya
 	and #$20
 	beq .even
 .odd:
-	lda #CHECKER_BG_COL
+	lda #GRID_BG_COL
 	sta COLUBK
-	lda #CHECKER_PF_COL
+	lda #GRID_PF_COL
 	sta COLUPF
 	bne .color_chosen	; unconditional jump
 .even:
-	lda #CHECKER_PF_COL
+	lda #GRID_PF_COL
 	sta COLUBK
-	lda #CHECKER_BG_COL
+	lda #GRID_BG_COL
 	sta COLUPF
 .color_chosen:
 	ENDM
 
-bg_checker_init:	SUBROUTINE
+bg_grid_init:	SUBROUTINE
 	;; Playfield setup
 	lda #$0
 	sta CTRLPF
@@ -30,15 +28,15 @@ bg_checker_init:	SUBROUTINE
 	lda #$07
 	sta PF2
 ;;; Empty functions
-bg_checker_vblank:
-bg_checker_overscan:
+bg_grid_vblank:
+bg_grid_overscan:
 	rts
 
-bg_checker_top_bottom_loop:	SUBROUTINE
+bg_grid_top_bottom_loop:	SUBROUTINE
 	ldx #55
 .loop:
 	sta WSYNC
-	BG_CHECKER_CHOOSE_COLOR
+	BG_GRID_CHOOSE_COLOR
 	lda #$00
 	sta GRP0
 	sta GRP1
@@ -47,9 +45,9 @@ bg_checker_top_bottom_loop:	SUBROUTINE
 	bpl .loop
 	rts
 
-bg_checker_kernel:	SUBROUTINE
+bg_grid_kernel:	SUBROUTINE
 	ldy framecnt
-	jsr bg_checker_top_bottom_loop
+	jsr bg_grid_top_bottom_loop
 
 	ldx #15
 .loop_middle_ext:
@@ -57,7 +55,7 @@ bg_checker_kernel:	SUBROUTINE
 	sta ptr
 .loop_middle_int:
 	sta WSYNC
-	BG_CHECKER_CHOOSE_COLOR
+	BG_GRID_CHOOSE_COLOR
 	lda sprite0,X
 	sta GRP0
 	lda sprite1,X
@@ -68,147 +66,9 @@ bg_checker_kernel:	SUBROUTINE
 	dex
 	bpl .loop_middle_ext
 
-	jsr bg_checker_top_bottom_loop
+	jsr bg_grid_top_bottom_loop
 	sta WSYNC
 	lda #$00
 	sta COLUBK
 	sta COLUPF
-	rts
-
-
-
-;;;;;;;;;;; 6 squares code
-
-bg_columns_init:	SUBROUTINE
-	;; Playfield setup - 3 columns
-	lda #$1
-	sta CTRLPF
-	lda #$f0
-	sta PF0
-	lda #$ff
-	sta PF1
-	lda #$01
-	sta PF2
-	lda #0
-	sta bg_columns_cnt
-
-	;; Colors setup - Standard colors
-	lda #COLUMNS_BG_COL
-	sta bg_columns_col_bg
-	lda #COLUMNS_PF_COL
-	sta bg_columns_col_pf
-	rts
-
-bg_columns_5cols_init:	SUBROUTINE
-	;; Playfield setup - 5 columns
-	lda #$1
-	sta CTRLPF
-	lda #$f0
-	sta PF0
-	lda #$f0
-	sta PF1
-	lda #$f0
-	sta PF2
-	lda #0
-	sta bg_columns_cnt
-
-	;; Colors setup - Rasta colors
-	lda #COLUMNS_RASTA_BG_COL
-	sta bg_columns_col_bg
-	lda #COLUMNS_RASTA_PF_COL
-	sta bg_columns_col_pf
-	rts
-
-bg_columns_fast_vblank:	SUBROUTINE
-	clc
-	lda bg_columns_cnt
-	cmp #(QUARTER_PATTERN - 6)
-	bcs .colors1
-.colors0:
-	lda #$00
-	bcc .end		; unconditional
-.colors1:
-	lda #$01
-.end:
-	sta bg_columns_col_sw
-	rts
-
-bg_columns_slow_vblank:	SUBROUTINE
-	clc
-	lda patframe
-	cmp #(PATTERN_FRAMES / 4)
-	beq .switch_colors
-	cmp #(3*PATTERN_FRAMES / 4)
-	bne .end
-.switch_colors:
-	lda bg_columns_col_sw
-	eor #$01
-	sta bg_columns_col_sw
-.end:
-	rts
-
-bg_columns_top_bottom_loop:	SUBROUTINE
-	ldx #54			; One more line done in kernel main
-.loop:
-	sta WSYNC
-	dex
-	bpl .loop
-	rts
-
-bg_columns_kernel:	SUBROUTINE
-	;; Set colors (bg and pf)
-	lda bg_columns_col_sw
-	sta WSYNC
-	bne .reverse_colors
-	lda bg_columns_col_bg
-	sta COLUBK
-	lda bg_columns_col_pf
-	sta COLUPF
-	bne .end_set_colors	; unconditional - shouldn't have black color
-.reverse_colors:
-	lda bg_columns_col_pf
-	sta COLUBK
-	lda bg_columns_col_bg
-	sta COLUPF
-.end_set_colors:
-
-	jsr bg_columns_top_bottom_loop
-
-	ldx #15
-.loop_middle_ext:
-	ldy #7
-.loop_middle_int:
-	sta WSYNC
-	lda sprite0,X
-	sta GRP0
-	lda sprite1,X
-	sta GRP1
-	dey
-	bpl .loop_middle_int
-	dex
-	bpl .loop_middle_ext
-
-	;; Clear players
-	sta WSYNC
-	lda #$00
-	sta GRP0
-	sta GRP1
-
-	jsr bg_columns_top_bottom_loop
-
-	;; Clear background
-	sta WSYNC
-	lda #$00
-	sta COLUBK
-	sta COLUPF
-	rts
-
-bg_columns_overscan:	SUBROUTINE
-	inc bg_columns_cnt
-	lda bg_columns_cnt
-	cmp #QUARTER_PATTERN
-	bne .continue
-	lda #0
-	sta bg_columns_cnt
-.continue:
 	rts
