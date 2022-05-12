@@ -80,7 +80,7 @@ bg_checker_kernel:	SUBROUTINE
 ;;;;;;;;;;; 6 squares code
 
 bg_6squares_init:	SUBROUTINE
-	;; Playfield setup
+	;; Playfield setup - 3 columns
 	lda #$1
 	sta CTRLPF
 	lda #$f0
@@ -94,7 +94,7 @@ bg_6squares_init:	SUBROUTINE
 	rts
 
 bg_6squares_5cols_init:	SUBROUTINE
-	;; Playfield setup
+	;; Playfield setup - 5 columns
 	lda #$1
 	sta CTRLPF
 	lda #$f0
@@ -107,7 +107,7 @@ bg_6squares_5cols_init:	SUBROUTINE
 	sta bg_6squares_cnt
 	rts
 
-bg_6squares_vblank:	SUBROUTINE
+bg_6squares_fast_vblank:	SUBROUTINE
 	clc
 	lda bg_6squares_cnt
 	cmp #(QUARTER_PATTERN - 6)
@@ -119,22 +119,6 @@ bg_6squares_vblank:	SUBROUTINE
 	lda #$01
 .end:
 	sta bg_6squares_col_sw
-
-	;; Set colors (bg and pf)
-	lda bg_6squares_col_sw
-	sta WSYNC
-	bne .reverse_colors
-	lda #COLUMNS_BG_COL
-	sta COLUBK
-	lda #COLUMNS_PF_COL
-	sta COLUPF
-	bne .end_set_colors	; unconditional - shouldn't have black color
-.reverse_colors:
-	lda #COLUMNS_PF_COL
-	sta COLUBK
-	lda #COLUMNS_BG_COL
-	sta COLUPF
-.end_set_colors:
 	rts
 
 bg_6squares_slow_vblank:	SUBROUTINE
@@ -149,20 +133,40 @@ bg_6squares_slow_vblank:	SUBROUTINE
 	eor #$01
 	sta bg_6squares_col_sw
 .end:
+	rts
 
+bg_6squares_set_standard_colors:	SUBROUTINE
 	;; Set colors (bg and pf)
 	lda bg_6squares_col_sw
 	sta WSYNC
 	bne .reverse_colors
-	lda #COLUMNS_BIS_BG_COL
+	lda #COLUMNS_BG_COL
 	sta COLUBK
-	lda #COLUMNS_BIS_PF_COL
+	lda #COLUMNS_PF_COL
 	sta COLUPF
 	bne .end_set_colors	; unconditional - shouldn't have black color
 .reverse_colors:
-	lda #COLUMNS_BIS_PF_COL
+	lda #COLUMNS_PF_COL
 	sta COLUBK
-	lda #COLUMNS_BIS_BG_COL
+	lda #COLUMNS_BG_COL
+	sta COLUPF
+.end_set_colors:
+	rts
+
+bg_6squares_set_rasta_colors:	SUBROUTINE
+	;; Set colors (bg and pf)
+	lda bg_6squares_col_sw
+	sta WSYNC
+	bne .reverse_colors
+	lda #COLUMNS_RASTA_BG_COL
+	sta COLUBK
+	lda #COLUMNS_RASTA_PF_COL
+	sta COLUPF
+	bne .end_set_colors	; unconditional - shouldn't have black color
+.reverse_colors:
+	lda #COLUMNS_RASTA_PF_COL
+	sta COLUBK
+	lda #COLUMNS_RASTA_BG_COL
 	sta COLUPF
 .end_set_colors:
 	rts
@@ -175,7 +179,7 @@ bg_6squares_top_bottom_loop:	SUBROUTINE
 	bpl .loop
 	rts
 
-bg_6squares_kernel:	SUBROUTINE
+bg_6squares_kernel_common:	SUBROUTINE
 	jsr bg_6squares_top_bottom_loop
 
 	ldx #15
@@ -203,6 +207,16 @@ bg_6squares_kernel:	SUBROUTINE
 	lda #$00
 	sta COLUBK
 	sta COLUPF
+	rts
+
+bg_6squares_standard_kernel:	SUBROUTINE
+	jsr bg_6squares_set_standard_colors
+	jsr bg_6squares_kernel_common
+	rts
+
+bg_6squares_rasta_kernel:	SUBROUTINE
+	jsr bg_6squares_set_rasta_colors
+	jsr bg_6squares_kernel_common
 	rts
 
 bg_6squares_overscan:	SUBROUTINE
