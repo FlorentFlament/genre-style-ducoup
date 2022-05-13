@@ -85,7 +85,7 @@ fx_init:	SUBROUTINE
 	sta COLUPF
 	sta COLUBK
 
-	lda #$02
+	lda #$00
 	sta current_bg
 	CALL_CURRENT_BACKGROUND bg_inits
 	rts
@@ -142,7 +142,7 @@ fx_overscan:	SUBROUTINE
 	lsr
 	REPEND
 	and #$03		; 4 backgrounds
-	;sta current_bg
+	sta current_bg
 	;; Call background init
 	;; Beware ! called each pattern even if background didn't change
 	CALL_CURRENT_BACKGROUND bg_inits
