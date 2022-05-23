@@ -91,14 +91,20 @@ fx_init:	SUBROUTINE
 	rts
 
 fx_vblank:	SUBROUTINE
+	;; Possibly update background
+	lda patcnt
+	lsr
+	and #$03		; 4 sprites
+	tax
+
 	;; Load sprites
-	lda #<sprite_tete_mme_0
+	lda sprite_a_timeline_l,X
 	sta sprite_a_ptr
-	lda #>sprite_tete_mme_0
+	lda sprite_a_timeline_h,X
 	sta sprite_a_ptr+1
-	lda #<sprite_tete_mme_1
+	lda sprite_b_timeline_l,X
 	sta sprite_b_ptr
-	lda #>sprite_tete_mme_1
+	lda sprite_b_timeline_h,X
 	sta sprite_b_ptr+1
 
 	;; Position sprites
@@ -185,17 +191,26 @@ bg_overscans:
 	.word bg_lines_overscan - 1
 	.word bg_columns_overscan - 1
 
-sprite_a_timeline:
-	.word sprite_tete_mr_0_lego
-	.word sprite_tete_mr_2
-	.word sprite_tete_mme_0
-	.word sprite_tete_mr_0_lego
-
-sprite_b_timeline:
-	.word sprite_tete_mme_0
-	.word sprite_tete_mr_1_barbu
-	.word sprite_tete_mme_1
-	.word sprite_tete_mr_3
+sprite_a_timeline_l:
+	.byte #<sprite_tete_mr_0_lego
+	.byte #<sprite_tete_mr_2
+	.byte #<sprite_tete_mme_0
+	.byte #<sprite_tete_mr_0_lego
+sprite_a_timeline_h:
+	.byte #>sprite_tete_mr_0_lego
+	.byte #>sprite_tete_mr_2
+	.byte #>sprite_tete_mme_0
+	.byte #>sprite_tete_mr_0_lego
+sprite_b_timeline_l:
+	.byte #<sprite_tete_mme_0
+	.byte #<sprite_tete_mr_1_barbu
+	.byte #<sprite_tete_mme_1
+	.byte #<sprite_tete_mr_3
+sprite_b_timeline_h:
+	.byte #>sprite_tete_mme_0
+	.byte #>sprite_tete_mr_1_barbu
+	.byte #>sprite_tete_mme_1
+	.byte #>sprite_tete_mr_3
 
 sprite_tete_mme_0:
 	dc.b $b7, $c9, $b7, $c9, $9d, $bf, $7e, $7f
