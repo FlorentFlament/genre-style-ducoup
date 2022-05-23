@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from os.path import basename
 from sys import argv
 from PIL import Image
 
@@ -12,9 +13,10 @@ def parse_sprite(fname):
     return [lbool2int((e!=0 for e in l)) for l in sprite]
 
 def main():
-    fname = argv[1]
-    data = list(reversed(parse_sprite(fname)))
-    print("sprite:")
-    print("{}".format(lst2asm(data)))
+    fnames = argv[1:]
+    for fname in fnames:
+        data = list(reversed(parse_sprite(fname)))
+        print("sprite_{}:".format(basename(fname).split(".")[0].replace("-","_")))
+        print("{}".format(lst2asm(data)))
 
 main()
