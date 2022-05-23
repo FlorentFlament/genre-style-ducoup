@@ -1,6 +1,6 @@
 	MAC BG_LINES_CHOOSE_NEXT_COLOR
-	;; Choose colors according to bit 5 of Y register
-	lda sin_table,Y
+	;; Choose colors according to bit 5 of X register
+	lda sin_table,X
 	clc
 	adc tmp0
 	and #$18
@@ -30,7 +30,7 @@ bg_lines_overscan:
 	rts
 
 bg_lines_top_bottom_loop:	SUBROUTINE
-	ldx #55
+	ldy #55
 .loop:
 	sta WSYNC
 	lda bg_lines_col
@@ -39,19 +39,19 @@ bg_lines_top_bottom_loop:	SUBROUTINE
 	sta GRP0
 	sta GRP1
 	BG_LINES_CHOOSE_NEXT_COLOR
-	iny
+	inx
 	inc tmp0
-	dex
+	dey
 	bpl .loop
 	rts
 
 bg_lines_kernel:	SUBROUTINE
-	ldy framecnt		; for transformation translation
+	ldx framecnt		; for transformation translation
 	lda #$0
 	sta tmp0
 	jsr bg_lines_top_bottom_loop
 
-	ldx #15
+	ldy #15
 .loop_middle_ext:
 	lda #7
 	sta ptr
@@ -59,16 +59,16 @@ bg_lines_kernel:	SUBROUTINE
 	sta WSYNC
 	lda bg_lines_col
 	sta COLUBK
-	lda sprite0,X
+	lda (sprite_a_ptr),Y
 	sta GRP0
-	lda sprite1,X
+	lda (sprite_b_ptr),Y
 	sta GRP1
 	BG_LINES_CHOOSE_NEXT_COLOR
-	iny
+	inx
 	inc tmp0
 	dec ptr
 	bpl .loop_middle_int
-	dex
+	dey
 	bpl .loop_middle_ext
 
 	jsr bg_lines_top_bottom_loop

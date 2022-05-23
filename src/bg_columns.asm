@@ -93,18 +93,18 @@ bg_columns_kernel:	SUBROUTINE
 
 	jsr bg_columns_top_bottom_loop
 
-	ldx #15
+	ldy #15
 .loop_middle_ext:
-	ldy #7
+	ldx #7
 .loop_middle_int:
 	sta WSYNC
-	lda sprite0,X
+	lda (sprite_a_ptr),Y
 	sta GRP0
-	lda sprite1,X
+	lda (sprite_b_ptr),Y
 	sta GRP1
-	dey
-	bpl .loop_middle_int
 	dex
+	bpl .loop_middle_int
+	dey
 	bpl .loop_middle_ext
 
 	;; Clear players

@@ -1,6 +1,6 @@
 	MAC BG_GRID_CHOOSE_COLOR
 	;; Choose colors according to bit 5 of Y register
-	tya
+	txa
 	and #$20
 	beq .even
 .odd:
@@ -33,37 +33,37 @@ bg_grid_overscan:
 	rts
 
 bg_grid_top_bottom_loop:	SUBROUTINE
-	ldx #55
+	ldy #55
 .loop:
 	sta WSYNC
 	BG_GRID_CHOOSE_COLOR
 	lda #$00
 	sta GRP0
 	sta GRP1
-	iny
-	dex
+	inx
+	dey
 	bpl .loop
 	rts
 
 bg_grid_kernel:	SUBROUTINE
-	ldy framecnt
+	ldx framecnt
 	jsr bg_grid_top_bottom_loop
 
-	ldx #15
+	ldy #15
 .loop_middle_ext:
 	lda #7
 	sta ptr
 .loop_middle_int:
 	sta WSYNC
 	BG_GRID_CHOOSE_COLOR
-	lda sprite0,X
+	lda (sprite_a_ptr),Y
 	sta GRP0
-	lda sprite1,X
+	lda (sprite_b_ptr),Y
 	sta GRP1
-	iny
+	inx
 	dec ptr
 	bpl .loop_middle_int
-	dex
+	dey
 	bpl .loop_middle_ext
 
 	jsr bg_grid_top_bottom_loop

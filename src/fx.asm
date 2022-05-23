@@ -91,6 +91,16 @@ fx_init:	SUBROUTINE
 	rts
 
 fx_vblank:	SUBROUTINE
+	;; Load sprites
+	lda #<sprite_tete_mme_0
+	sta sprite_a_ptr
+	lda #>sprite_tete_mme_0
+	sta sprite_a_ptr+1
+	lda #<sprite_tete_mme_1
+	sta sprite_b_ptr
+	lda #>sprite_tete_mme_1
+	sta sprite_b_ptr+1
+
 	;; Position sprites
 	lda sprite0_pos
 	POSITION_SPRITE 0
@@ -151,15 +161,6 @@ fx_overscan:	SUBROUTINE
 	CALL_CURRENT_BACKGROUND bg_overscans
 	rts
 
-;;; Sprites ripped from:
-;;; http://8bitcity.blogspot.com/2011/12/pixel-art-tiny-sprites.html
-sprite0:
-	dc.b $00, $00, $00, $00, $55, $ff, $7f, $7f
-	dc.b $7f, $6d, $7f, $22, $00, $00, $00, $00
-sprite1:
-	dc.b $00, $00, $52, $52, $52, $52, $f2, $f2
-	dc.b $f2, $fe, $72, $72, $77, $52, $72, $00
-
 bg_inits:
 	.word bg_grid_init - 1
 	.word bg_columns_rasta_init - 1
@@ -183,3 +184,34 @@ bg_overscans:
 	.word bg_columns_overscan - 1
 	.word bg_lines_overscan - 1
 	.word bg_columns_overscan - 1
+
+sprite_a_timeline:
+	.word sprite_tete_mr_0_lego
+	.word sprite_tete_mr_2
+	.word sprite_tete_mme_0
+	.word sprite_tete_mr_0_lego
+
+sprite_b_timeline:
+	.word sprite_tete_mme_0
+	.word sprite_tete_mr_1_barbu
+	.word sprite_tete_mme_1
+	.word sprite_tete_mr_3
+
+sprite_tete_mme_0:
+	dc.b $b7, $c9, $b7, $c9, $9d, $bf, $7e, $7f
+	dc.b $3f, $4f, $b7, $83, $ab, $47, $3e, $1c
+sprite_tete_mme_1:
+	dc.b $7e, $81, $99, $bd, $bd, $be, $5f, $3f
+	dc.b $4f, $87, $a7, $87, $57, $8f, $7e, $38
+sprite_tete_mr_0_lego:
+	dc.b $ff, $ab, $d5, $7e, $3c, $42, $42, $99
+	dc.b $85, $81, $a5, $81, $e3, $cf, $ff, $7e
+sprite_tete_mr_1_barbu:
+	dc.b $ff, $ff, $ff, $f9, $e6, $5f, $3f, $79
+	dc.b $7e, $f1, $a1, $ea, $e1, $71, $3e, $1c
+sprite_tete_mr_2:
+	dc.b $7e, $f3, $f9, $f5, $ff, $7e, $24, $42
+	dc.b $5a, $81, $a5, $c3, $c3, $ff, $ff, $7e
+sprite_tete_mr_3:
+	dc.b $7e, $95, $a5, $a5, $a1, $82, $5c, $24
+	dc.b $6a, $c2, $d6, $e2, $fc, $7e, $3f, $15

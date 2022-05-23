@@ -17,6 +17,9 @@ current_bg		DS.B	1
 
 
 ;;;;;;;;;; Sprites variables ;;;;;;;;;;
+;;; Sprites pointers
+sprite_a_ptr	DS.B	2
+sprite_b_ptr	DS.B	2
 	
 ;;; Sprites horizontal position on the screen
 sprite0_pos	DS.B	1
