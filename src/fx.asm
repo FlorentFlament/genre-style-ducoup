@@ -220,11 +220,11 @@ sprite_b_timeline_h:
 	.byte #>sprite_tete_mr_3
 
 sprite_tete_mme_0:
-	dc.b $b7, $c9, $b7, $c9, $9d, $bf, $7e, $7f
-	dc.b $3f, $4f, $b7, $83, $ab, $47, $3e, $1c
+	dc.b $ed, $93, $ed, $93, $b9, $fd, $7e, $fe
+	dc.b $fc, $f2, $ed, $c1, $d5, $e2, $7c, $38
 sprite_tete_mme_1:
-	dc.b $7e, $81, $99, $bd, $bd, $be, $5f, $3f
-	dc.b $4f, $87, $a7, $87, $57, $8f, $7e, $38
+	dc.b $7e, $81, $99, $bd, $bd, $7d, $fa, $fc
+	dc.b $f2, $e1, $e5, $e1, $ea, $f1, $7e, $1c
 sprite_tete_mr_0_lego:
 	dc.b $ff, $ab, $d5, $7e, $3c, $42, $42, $99
 	dc.b $85, $81, $a5, $81, $e3, $cf, $ff, $7e
