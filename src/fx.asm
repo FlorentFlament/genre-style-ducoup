@@ -80,6 +80,13 @@ fx_init:	SUBROUTINE
 	lda #$1
 	sta sprites_dir
 
+	;; Sprite0 is not reflected
+	lda #$00
+	sta REFP0
+	;; While sprite1 is
+	lda #$08
+	sta REFP1
+
 	;; Clear bg and pf colors
 	lda #$00
 	sta COLUPF
