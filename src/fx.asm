@@ -106,6 +106,15 @@ compute_right_left_position:	SUBROUTINE
 	sbc tmp0
 	rts
 
+
+;;; Computes the main timeline index and put it in X
+compute_timeline_index:	SUBROUTINE
+	lda patcnt
+	lsr
+	and #$07		; 8 sprites - Subject to change (also the mechanism)
+	tax
+	rts
+
 ;;; Vblank routine for 2 distinct sprites - same color
 	MAC TWO_DISTINCT_SPRITES_VBLANK
 	;; Load sprites (switch depending on pattern parity)
@@ -154,6 +163,7 @@ compute_right_left_position:	SUBROUTINE
 	jsr position_sprites
 	ENDM
 
+;;; vblank routine displaying the lemming
 	MAC LEMMING_VBLANK
 	lda framecnt
 	REPEAT 3
@@ -206,15 +216,12 @@ compute_right_left_position:	SUBROUTINE
 
 fx_vblank:	SUBROUTINE
 	;; Select sprites
-	lda patcnt
-	lsr
-	and #$03		; 4 sprites - Subject to change (also the mechanism)
-	tax
+	jsr compute_timeline_index
 
 	;; Selecting routine depending on timeline
 	lda main_timeline,X
-	and #$01
-	beq .two_distinct
+	and #$02		; 2 distinct sprites
+	bne .two_distinct
 	LEMMING_VBLANK
 	jmp .sprites_selected
 .two_distinct:
@@ -224,8 +231,70 @@ fx_vblank:	SUBROUTINE
 	rts
 
 fx_kernel:	SUBROUTINE
+	jsr compute_timeline_index
+	;; Selecting routine depending on timeline
+	lda main_timeline,X
+	and #$04		; is it a 40x40 playfield ?
+	bne .playfield
+	;; Otherwise we're on a sprite / bg kernel
 	CALL_CURRENT_BACKGROUND bg_kernels
 	rts
+.playfield
+	PLAYFIELD_PICTURE
+	rts
+
+;;; Display a 40x40 picture
+	MAC PLAYFIELD_PICTURE
+	;; Initialize
+	lda #$00
+	sta COLUBK
+	sta PF0
+	sta PF1
+	sta PF2
+	;; no reflection
+	lda #$00
+	sta REFP0
+	sta REFP1
+
+	lda #$ff
+	sta COLUPF
+
+	ldx #0
+.bottom_loop:
+	ldy #5
+.inner_loop:
+	sta WSYNC
+	lda pf_test_40x40,X
+	sta PF0
+	lda pf_test_40x40+1,X
+	sta PF1
+	lda pf_test_40x40+2,X
+	sta PF2
+	SLEEP 6
+	lda pf_test_40x40+3,X
+	sta PF0
+	lda pf_test_40x40+4,X
+	sta PF1
+	lda pf_test_40x40+5,X
+	sta PF2
+	dey
+	bpl .inner_loop
+
+	txa
+	clc
+	adc #6
+	tax
+	cpx #(40*6)		; 40 lines picture
+	bcc .bottom_loop
+
+	sta WSYNC
+	lda #$00
+	sta PF0
+	sta PF1
+	sta PF2
+	sta COLUPF
+	ENDM
+
 
 fx_overscan:	SUBROUTINE
 	;; Per pattern chores
@@ -275,37 +344,52 @@ bg_overscans:
 ;;; Bit 1 indicates whether a lemming should be displayed
 ;;; Bit 3 indicates whether sprites should be hardware reflected
 main_timeline:
+	.byte #$04
 	.byte #$01		; Lemming
-	.byte #$00		; 2 sprites - no reflection
-	.byte #$08		; 2 sprites - with reflection
-	.byte #$08
-	.byte #$08
+	.byte #$02		; 2 sprites - no reflection
+	.byte #$0a		; 2 sprites - with reflection
+	.byte #$0a
+	.byte #$0a
+	.byte #$01		; Lemming
+	.byte #$0a
 
 ;;; Sprites to be used
 sprite_a_timeline_l:
+	.byte #$00
 	.byte #$00		; Unused - Lemming sprite animation table used instead
 	.byte #<sprite_hello
 	.byte #<sprite_tete_mr_0_lego
 	.byte #<sprite_tete_mr_2
 	.byte #<sprite_tete_mme_0
+	.byte #$00
+	.byte #<sprite_tete_mr_0_lego
 sprite_a_timeline_h:
+	.byte #$00
 	.byte #$00
 	.byte #>sprite_hello
 	.byte #>sprite_tete_mr_0_lego
 	.byte #>sprite_tete_mr_2
 	.byte #>sprite_tete_mme_0
+	.byte #$00
+	.byte #>sprite_tete_mr_0_lego
 sprite_b_timeline_l:
+	.byte #$00
 	.byte #$00
 	.byte #<sprite_folks
 	.byte #<sprite_tete_mme_0
 	.byte #<sprite_tete_mr_1_barbu
 	.byte #<sprite_tete_mme_1
+	.byte #$00
+	.byte #<sprite_tete_mme_0
 sprite_b_timeline_h:
+	.byte #$00
 	.byte #$00
 	.byte #>sprite_folks
 	.byte #>sprite_tete_mme_0
 	.byte #>sprite_tete_mr_1_barbu
 	.byte #>sprite_tete_mme_1
+	.byte #$00
+	.byte #>sprite_tete_mme_0
 
 ;;; Lemmings sprites animation
 lemming_sprite_timeline_lb:
@@ -379,3 +463,45 @@ sprite_lemming_4b:
 sprite_lemming_4w:
 	dc.b $00, $00, $00, $00, $18, $20, $00, $10
 	dc.b $10, $10, $1c, $08, $00, $00, $00, $00
+
+pf_test_40x40:
+	dc.b $70, $00, $00, $00, $00, $f0
+	dc.b $70, $01, $07, $e0, $e0, $f0
+	dc.b $00, $01, $07, $e0, $c0, $f0
+	dc.b $00, $00, $04, $e0, $00, $f0
+	dc.b $00, $00, $00, $e0, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $38, $00, $00, $00
+	dc.b $00, $00, $f2, $70, $00, $00
+	dc.b $00, $01, $ff, $70, $00, $00
+	dc.b $00, $01, $01, $00, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $f1, $c1, $40, $78, $13
+	dc.b $80, $fb, $e1, $40, $fd, $13
+	dc.b $80, $c3, $e1, $40, $e1, $13
+	dc.b $80, $c3, $e1, $40, $e1, $13
+	dc.b $80, $e3, $e1, $40, $f9, $1f
+	dc.b $80, $e3, $e1, $40, $7d, $1f
+	dc.b $80, $c3, $e1, $40, $05, $13
+	dc.b $80, $c3, $e1, $60, $05, $13
+	dc.b $80, $c3, $ef, $70, $fd, $13
+	dc.b $00, $c1, $c7, $30, $78, $13
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $00, $00, $fc, $f0, $00, $00
+	dc.b $00, $00, $fc, $f0, $00, $00
+	dc.b $00, $00, $00, $00, $00, $00
+	dc.b $f0, $e0, $00, $00, $00, $fc
+	dc.b $f0, $e0, $00, $00, $00, $fc
+	dc.b $00, $60, $00, $00, $00, $0c
+	dc.b $00, $60, $00, $00, $00, $0c
+	dc.b $00, $60, $80, $10, $00, $0c
+	dc.b $00, $60, $80, $10, $00, $0c
+	dc.b $00, $60, $80, $10, $00, $0c
+	dc.b $00, $60, $80, $10, $00, $0c
+	dc.b $00, $60, $80, $10, $00, $0c
