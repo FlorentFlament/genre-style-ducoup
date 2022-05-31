@@ -17,21 +17,14 @@ current_bg		DS.B	1
 
 
 ;;;;;;;;;; Sprites variables ;;;;;;;;;;
+
 ;;; Sprites pointers
 sprite_a_ptr	DS.B	2
 sprite_b_ptr	DS.B	2
-	
-;;; Sprites horizontal position on the screen
-sprite0_pos	DS.B	1
-sprite1_pos	DS.B	1
-
-;;; if 0: sprite0 moves left to right and sprite1 right to left
-;;; if 1; sprite1 moves left to right and sprite0 right to left
-sprites_dir	DS.B	1
 
 
 ;;;;;;;;;; bg_colunms variables ;;;;;;;;;;
-	
+
 bg_columns_col_bg	DS.B	1
 bg_columns_col_pf	DS.B	1
 

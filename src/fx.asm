@@ -66,16 +66,6 @@ fx_init:	SUBROUTINE
 	sta NUSIZ0
 	sta NUSIZ1
 
-	;; Initial sprites positions
-	lda #33
-	sta sprite0_pos
-	lda #99
-	sta sprite1_pos
-	;; sprite0 moves left to right
-	;; sprite1 moves right to left
-	lda #$1
-	sta sprites_dir
-
 	;; Clear bg and pf colors
 	lda #$00
 	sta COLUPF
@@ -88,13 +78,10 @@ fx_init:	SUBROUTINE
 
 ;;; Vblank routine for 2 distinct sprites - same color
 	MAC TWO_DISTINCT_SPRITES_VBLANK
-	;; Set colors
-	lda #$00
-	sta COLUP0
-	lda #$00
-	sta COLUP1
-
-	;; Load sprites
+	;; Load sprites (switch depending on pattern parity)
+	lda patcnt
+	and #$01
+	bne .switch_sprites	; Ugly, can I do better ?
 	lda sprite_a_timeline_l,X
 	sta sprite_a_ptr
 	lda sprite_a_timeline_h,X
@@ -103,28 +90,30 @@ fx_init:	SUBROUTINE
 	sta sprite_b_ptr
 	lda sprite_b_timeline_h,X
 	sta sprite_b_ptr+1
+	jmp .end_switch_sprites
+.switch_sprites:
+	lda sprite_a_timeline_l,X
+	sta sprite_b_ptr
+	lda sprite_a_timeline_h,X
+	sta sprite_b_ptr+1
+	lda sprite_b_timeline_l,X
+	sta sprite_a_ptr
+	lda sprite_b_timeline_h,X
+	sta sprite_a_ptr+1
+.end_switch_sprites:
 
-	;; Sprite flipping depends on main timeline
-	lda main_timeline,X
-	sta tmp0
-
-	;; Sprite to flip depends on pattern parity
-	lda patcnt
-	and #$01
-	REPEAT 3
-	asl
-	REPEND
-	sta ptr
-
-	;; Sprite0 reflection
+	;; Set colors
 	lda #$00
-	eor ptr			; Flip or not depending on pattern
-	and tmp0		; Flip or not depending on timeline
+	sta COLUP0
+	lda #$00
+	sta COLUP1
+
+	;; Sprite0 - no reflection
+	lda #$00
 	sta REFP0
-	;; Sprite1 reflection
-	lda #$08
-	eor ptr			; Flip or not depending on pattern
-	and tmp0		; Flip or not depending on timeline
+	;; Sprite1 - reflected reflection
+	lda main_timeline,X
+	and #$08
 	sta REFP1
 	ENDM
 
@@ -139,16 +128,26 @@ fx_vblank:	SUBROUTINE
 	lda main_timeline,X
 	and #$01
 	beq .two_distinct
+	;; Lemming code goes there
 	bne .main_fx_selected
 .two_distinct:
 	TWO_DISTINCT_SPRITES_VBLANK
 .main_fx_selected:
 
 	;; Position sprites
-	lda sprite0_pos
+	lda patframe
+	lsr
+	clc
+	adc #33
 	POSITION_SPRITE 0
-	lda sprite1_pos
+	lda patframe
+	lsr
+	sta tmp0
+	lda #99
+	sec
+	sbc tmp0
 	POSITION_SPRITE 1
+
 	sta WSYNC
 	sta HMOVE		; Commit sprites fine tuning
 
@@ -159,37 +158,10 @@ fx_kernel:	SUBROUTINE
 	CALL_CURRENT_BACKGROUND bg_kernels
 	rts
 
-;;; X must be 0 for sprite0, 1 for sprite1
-fx_update_sprite_position:	SUBROUTINE
-	cpx sprites_dir
-	beq .sp_right_left
-.sp_left_right:
-	inc sprite0_pos,X
-	bne .end		; inconditional
-.sp_right_left:
-	dec sprite0_pos,X
-.end:
-	rts
-
-;;; Overscan routine for 2 distinct sprites - same color
-	MAC TWO_DISTINCT_SPRITES_OVERSCAN
-	;; Update sprites positions
-	lda framecnt
-	and #$01
-	beq .end_update_sprites_positions
-	ldx #0
-	jsr fx_update_sprite_position
-	ldx #1
-	jsr fx_update_sprite_position
-.end_update_sprites_positions:
-
+fx_overscan:	SUBROUTINE
 	;; Per pattern chores
 	lda patframe
 	bne .no_pattern_change
-	;; Update sprites direction
-	lda sprites_dir
-	eor #$01
-	sta sprites_dir
 	;; Possibly update background
 	lda patcnt
 	REPEAT 2
@@ -201,17 +173,6 @@ fx_update_sprite_position:	SUBROUTINE
 	;; Beware ! called each pattern even if background didn't change
 	CALL_CURRENT_BACKGROUND bg_inits
 .no_pattern_change:
-	ENDM
-
-fx_overscan:	SUBROUTINE
-	;; Selecting routine depending on timeline
-	lda main_timeline,X
-	and #$01
-	beq .two_distinct
-	;bne .main_fx_selected
-.two_distinct:
-	TWO_DISTINCT_SPRITES_OVERSCAN
-.main_fx_selected:
 
 	CALL_CURRENT_BACKGROUND bg_overscans
 	rts
