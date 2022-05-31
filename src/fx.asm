@@ -65,10 +65,6 @@ fx_init:	SUBROUTINE
 	lda #$07
 	sta NUSIZ0
 	sta NUSIZ1
-	lda #$00
-	sta COLUP0
-	lda #$00
-	sta COLUP1
 
 	;; Initial sprites positions
 	lda #33
@@ -90,12 +86,13 @@ fx_init:	SUBROUTINE
 	CALL_CURRENT_BACKGROUND bg_inits
 	rts
 
-fx_vblank:	SUBROUTINE
-	;; Possibly update background
-	lda patcnt
-	lsr
-	and #$03		; 4 sprites
-	tax
+;;; Vblank routine for 2 distinct sprites - same color
+	MAC TWO_DISTINCT_SPRITES_VBLANK
+	;; Set colors
+	lda #$00
+	sta COLUP0
+	lda #$00
+	sta COLUP1
 
 	;; Load sprites
 	lda sprite_a_timeline_l,X
@@ -107,8 +104,8 @@ fx_vblank:	SUBROUTINE
 	lda sprite_b_timeline_h,X
 	sta sprite_b_ptr+1
 
-	;; Sprite flipping depends on timeline
-	lda reflection_timeline,X
+	;; Sprite flipping depends on main timeline
+	lda main_timeline,X
 	sta tmp0
 
 	;; Sprite to flip depends on pattern parity
@@ -119,16 +116,33 @@ fx_vblank:	SUBROUTINE
 	REPEND
 	sta ptr
 
-	;; Sprite0 is not reflected
+	;; Sprite0 reflection
 	lda #$00
 	eor ptr			; Flip or not depending on pattern
 	and tmp0		; Flip or not depending on timeline
 	sta REFP0
-	;; While sprite1 is according to reflection timeline
+	;; Sprite1 reflection
 	lda #$08
 	eor ptr			; Flip or not depending on pattern
 	and tmp0		; Flip or not depending on timeline
 	sta REFP1
+	ENDM
+
+fx_vblank:	SUBROUTINE
+	;; Select sprites
+	lda patcnt
+	lsr
+	and #$03		; 4 sprites - Subject to change (also the mechanism)
+	tax
+
+	;; Selecting routine depending on timeline
+	lda main_timeline,X
+	and #$01
+	beq .two_distinct
+	bne .main_fx_selected
+.two_distinct:
+	TWO_DISTINCT_SPRITES_VBLANK
+.main_fx_selected:
 
 	;; Position sprites
 	lda sprite0_pos
@@ -157,7 +171,8 @@ fx_update_sprite_position:	SUBROUTINE
 .end:
 	rts
 
-fx_overscan:	SUBROUTINE
+;;; Overscan routine for 2 distinct sprites - same color
+	MAC TWO_DISTINCT_SPRITES_OVERSCAN
 	;; Update sprites positions
 	lda framecnt
 	and #$01
@@ -186,6 +201,17 @@ fx_overscan:	SUBROUTINE
 	;; Beware ! called each pattern even if background didn't change
 	CALL_CURRENT_BACKGROUND bg_inits
 .no_pattern_change:
+	ENDM
+
+fx_overscan:	SUBROUTINE
+	;; Selecting routine depending on timeline
+	lda main_timeline,X
+	and #$01
+	beq .two_distinct
+	;bne .main_fx_selected
+.two_distinct:
+	TWO_DISTINCT_SPRITES_OVERSCAN
+.main_fx_selected:
 
 	CALL_CURRENT_BACKGROUND bg_overscans
 	rts
@@ -214,27 +240,38 @@ bg_overscans:
 	.word bg_lines_overscan - 1
 	.word bg_columns_overscan - 1
 
-reflection_timeline:
-	.byte #$00
+;;; Each bit acts as an independant flag (1 for true, 0 for false)
+;;; Bit 0 indicates whether a 40x40 screen should be displayed
+;;; Bit 1 indicates whether a lemming should be displayed
+;;; Bit 3 indicates whether sprites should be hardware reflected
+main_timeline:
+;	.byte #$01		; Lemming
+	.byte #$00		; 2 sprites - no reflection
+	.byte #$08		; 2 sprites - with reflection
 	.byte #$08
 	.byte #$08
-	.byte #$08
+
+;;; Sprites to be used
 sprite_a_timeline_l:
+;	.byte #<sprite_lemming_1b
 	.byte #<sprite_hello
 	.byte #<sprite_tete_mr_0_lego
 	.byte #<sprite_tete_mr_2
 	.byte #<sprite_tete_mme_0
 sprite_a_timeline_h:
+;	.byte #>sprite_lemming_1b
 	.byte #>sprite_hello
 	.byte #>sprite_tete_mr_0_lego
 	.byte #>sprite_tete_mr_2
 	.byte #>sprite_tete_mme_0
 sprite_b_timeline_l:
+;	.byte #<sprite_lemming_1w
 	.byte #<sprite_folks
 	.byte #<sprite_tete_mme_0
 	.byte #<sprite_tete_mr_1_barbu
 	.byte #<sprite_tete_mme_1
 sprite_b_timeline_h:
+;	.byte #>sprite_lemming_1w
 	.byte #>sprite_folks
 	.byte #>sprite_tete_mme_0
 	.byte #>sprite_tete_mr_1_barbu
@@ -265,3 +302,10 @@ sprite_tete_mr_2:
 sprite_tete_mr_3:
 	dc.b $7e, $95, $a5, $a5, $a1, $82, $5c, $24
 	dc.b $6a, $c2, $d6, $e2, $fc, $7e, $3f, $15
+
+sprite_lemming_1b:
+	dc.b $00, $00, $00, $00, $00, $30, $18, $18
+	dc.b $18, $08, $00, $30, $38, $14, $00, $00
+sprite_lemming_1w:
+	dc.b $00, $00, $00, $00, $30, $04, $02, $22
+	dc.b $20, $10, $1c, $08, $00, $00, $00, $00
