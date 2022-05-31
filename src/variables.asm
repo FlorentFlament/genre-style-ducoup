@@ -12,8 +12,18 @@ COLUMNS_RASTA_PF_COL = $56		; green
 LINES_BG_COL = $b6 		; blue
 LINES_PF_COL = $2e		; yellow
 
+;;; Keep track of timeline index
+;;; bit0 = 0 -> 40x40
+;;; bit0 = 1 -> sprites / bg
+;;;   bit1 = 0 -> 2 sprites
+;;;     bit3 = 0 -> no reflexion
+;;;     bit3 = 1 -> reflexion
+;;;   bit1 = 1 -> lemming
+;;; bit7 = 1 -> end of intro
+timeline_i	DS.B	1	; To be used
+
 ;;; Keep track of background being displayed
-current_bg		DS.B	1
+current_bg	DS.B	1
 
 
 ;;;;;;;;;; Sprites variables ;;;;;;;;;;

@@ -66,12 +66,8 @@ fx_init:	SUBROUTINE
 	sta NUSIZ0
 	sta NUSIZ1
 
-	;; Clear bg and pf colors
 	lda #$00
-	sta COLUPF
-	sta COLUBK
-
-	lda #$00
+	sta timeline_i
 	sta current_bg
 	CALL_CURRENT_BACKGROUND bg_inits
 	rts
@@ -109,10 +105,7 @@ compute_right_left_position:	SUBROUTINE
 
 ;;; Computes the main timeline index and put it in X
 compute_timeline_index:	SUBROUTINE
-	lda patcnt
-	lsr
-	and #$07		; 8 sprites - Subject to change (also the mechanism)
-	tax
+	ldx timeline_i
 	rts
 
 ;;; Vblank routine for 2 distinct sprites - same color
@@ -215,50 +208,40 @@ compute_timeline_index:	SUBROUTINE
 	ENDM
 
 fx_vblank:	SUBROUTINE
-	;; Select sprites
-	jsr compute_timeline_index
-
 	;; Selecting routine depending on timeline
+	ldx timeline_i
 	lda main_timeline,X
-	and #$02		; 2 distinct sprites
-	bne .two_distinct
-	LEMMING_VBLANK
-	jmp .sprites_selected
-.two_distinct:
-	TWO_DISTINCT_SPRITES_VBLANK
-.sprites_selected:
-	CALL_CURRENT_BACKGROUND bg_vblanks
-	rts
-
-fx_kernel:	SUBROUTINE
-	jsr compute_timeline_index
-	;; Selecting routine depending on timeline
-	lda main_timeline,X
-	and #$04		; is it a 40x40 playfield ?
-	bne .playfield
-	;; Otherwise we're on a sprite / bg kernel
-	CALL_CURRENT_BACKGROUND bg_kernels
-	rts
-.playfield
-	PLAYFIELD_PICTURE
-	rts
-
-;;; Display a 40x40 picture
-	MAC PLAYFIELD_PICTURE
-	;; Initialize
+	and #$01
+	bne .sprites_n_bg
+.playfield:
 	lda #$00
 	sta COLUBK
 	sta PF0
 	sta PF1
 	sta PF2
 	;; no reflection
-	lda #$00
 	sta REFP0
 	sta REFP1
-
 	lda #$ff
 	sta COLUPF
+	rts
 
+.sprites_n_bg:
+	lda main_timeline,X
+	and #$02
+	bne .lemming
+.two_sprites:
+	TWO_DISTINCT_SPRITES_VBLANK
+	jmp .bg_vblank
+.lemming:
+	LEMMING_VBLANK
+.bg_vblank:			; common to sprites_n_bg routines
+	CALL_CURRENT_BACKGROUND bg_vblanks
+	rts
+
+
+;;; Display a 40x40 picture
+	MAC PLAYFIELD_PICTURE
 	ldx #0
 .bottom_loop:
 	ldy #5
@@ -296,10 +279,36 @@ fx_kernel:	SUBROUTINE
 	ENDM
 
 
+fx_kernel:	SUBROUTINE
+	;; Selecting routine depending on timeline
+	ldx timeline_i
+	lda main_timeline,X
+	sta WSYNC		; synchronize kernels there
+	and #$01
+	bne .sprites_n_bg
+.playfield:
+	PLAYFIELD_PICTURE
+	rts
+.sprites_n_bg:
+	CALL_CURRENT_BACKGROUND bg_kernels
+	rts
+
+
 fx_overscan:	SUBROUTINE
 	;; Per pattern chores
 	lda patframe
 	bne .no_pattern_change
+	lda patcnt
+	and #$01		; increase timeline_i every other pattern
+	bne .end_timeline_i_change
+	inc timeline_i
+	ldx timeline_i
+	lda main_timeline,X
+	; back on previous timeline_i when seeing end of timeline indicator
+	cmp #$80
+	bne .end_timeline_i_change
+	dec timeline_i
+.end_timeline_i_change:
 	;; Possibly update background
 	lda patcnt
 	REPEAT 2
@@ -311,7 +320,6 @@ fx_overscan:	SUBROUTINE
 	;; Beware ! called each pattern even if background didn't change
 	CALL_CURRENT_BACKGROUND bg_inits
 .no_pattern_change:
-
 	CALL_CURRENT_BACKGROUND bg_overscans
 	rts
 
@@ -320,19 +328,16 @@ bg_inits:
 	.word bg_columns_rasta_init - 1
 	.word bg_lines_init - 1
 	.word bg_columns_std_init - 1
-
 bg_vblanks:
 	.word bg_grid_vblank - 1
 	.word bg_columns_slow_vblank - 1
 	.word bg_lines_vblank - 1
 	.word bg_columns_fast_vblank - 1
-
 bg_kernels:
 	.word bg_grid_kernel - 1
 	.word bg_columns_kernel - 1
 	.word bg_lines_kernel - 1
 	.word bg_columns_kernel - 1
-
 bg_overscans:
 	.word bg_grid_overscan - 1
 	.word bg_columns_overscan - 1
@@ -344,25 +349,48 @@ bg_overscans:
 ;;; Bit 1 indicates whether a lemming should be displayed
 ;;; Bit 3 indicates whether sprites should be hardware reflected
 main_timeline:
-	.byte #$04
-	.byte #$01		; Lemming
-	.byte #$02		; 2 sprites - no reflection
-	.byte #$0a		; 2 sprites - with reflection
-	.byte #$0a
-	.byte #$0a
-	.byte #$01		; Lemming
-	.byte #$0a
+	.byte #$00
+	.byte #$03		; Lemming
+	.byte #$01		; 2 sprites - no reflection
+	.byte #$09		; 2 sprites - with reflection
+	.byte #$09
+	.byte #$09
+	.byte #$01
+	.byte #$01
+	.byte #$01
+	.byte #$01
+	.byte #$03
+	.byte #$00
+	.byte #$03
+	.byte #$00
+	.byte #$09
+	.byte #$09
+	.byte #$09
+	.byte #$09
+	.byte #$03
+	.byte #$80		; end of intro
 
 ;;; Sprites to be used
 sprite_a_timeline_l:
 	.byte #$00
-	.byte #$00		; Unused - Lemming sprite animation table used instead
+	.byte #$00
 	.byte #<sprite_hello
 	.byte #<sprite_tete_mr_0_lego
 	.byte #<sprite_tete_mr_2
 	.byte #<sprite_tete_mme_0
+	.byte #<sprite_symbol_male
+	.byte #<sprite_symbol_male
+	.byte #<sprite_symbol_female
+	.byte #<sprite_symbol_nogenre
+	.byte #$00
+	.byte #$00
+	.byte #$00
 	.byte #$00
 	.byte #<sprite_tete_mr_0_lego
+	.byte #<sprite_tete_mr_2
+	.byte #<sprite_tete_mme_0
+	.byte #<sprite_animal_dog
+	.byte #$00
 sprite_a_timeline_h:
 	.byte #$00
 	.byte #$00
@@ -370,8 +398,19 @@ sprite_a_timeline_h:
 	.byte #>sprite_tete_mr_0_lego
 	.byte #>sprite_tete_mr_2
 	.byte #>sprite_tete_mme_0
+	.byte #>sprite_symbol_male
+	.byte #>sprite_symbol_male
+	.byte #>sprite_symbol_female
+	.byte #>sprite_symbol_nogenre
+	.byte #$00
+	.byte #$00
+	.byte #$00
 	.byte #$00
 	.byte #>sprite_tete_mr_0_lego
+	.byte #>sprite_tete_mr_2
+	.byte #>sprite_tete_mme_0
+	.byte #>sprite_animal_dog
+	.byte #$00
 sprite_b_timeline_l:
 	.byte #$00
 	.byte #$00
@@ -379,8 +418,19 @@ sprite_b_timeline_l:
 	.byte #<sprite_tete_mme_0
 	.byte #<sprite_tete_mr_1_barbu
 	.byte #<sprite_tete_mme_1
+	.byte #<sprite_symbol_female
+	.byte #<sprite_symbol_male
+	.byte #<sprite_symbol_female
+	.byte #<sprite_symbol_nogenre
+	.byte #$00
+	.byte #$00
+	.byte #$00
 	.byte #$00
 	.byte #<sprite_tete_mme_0
+	.byte #<sprite_tete_mr_1_barbu
+	.byte #<sprite_tete_mme_1
+	.byte #<sprite_animal_cat
+	.byte #$00
 sprite_b_timeline_h:
 	.byte #$00
 	.byte #$00
@@ -388,8 +438,19 @@ sprite_b_timeline_h:
 	.byte #>sprite_tete_mme_0
 	.byte #>sprite_tete_mr_1_barbu
 	.byte #>sprite_tete_mme_1
+	.byte #>sprite_symbol_female
+	.byte #>sprite_symbol_male
+	.byte #>sprite_symbol_female
+	.byte #>sprite_symbol_nogenre
+	.byte #$00
+	.byte #$00
+	.byte #$00
 	.byte #$00
 	.byte #>sprite_tete_mme_0
+	.byte #>sprite_tete_mr_1_barbu
+	.byte #>sprite_tete_mme_1
+	.byte #>sprite_animal_cat
+	.byte #$00
 
 ;;; Lemmings sprites animation
 lemming_sprite_timeline_lb:
@@ -438,6 +499,21 @@ sprite_tete_mr_2:
 sprite_tete_mr_3:
 	dc.b $7e, $95, $a5, $a5, $a1, $82, $5c, $24
 	dc.b $6a, $c2, $d6, $e2, $fc, $7e, $3f, $15
+sprite_symbol_female:
+	dc.b $fe, $82, $38, $44, $10, $38, $10, $38
+	dc.b $44, $44, $44, $38, $00, $28, $82, $fe
+sprite_symbol_male:
+	dc.b $fe, $82, $28, $00, $70, $88, $88, $88
+	dc.b $75, $03, $07, $00, $54, $28, $82, $fe
+sprite_symbol_nogenre:
+	dc.b $fe, $82, $00, $20, $70, $20, $70, $88
+	dc.b $88, $88, $75, $03, $07, $00, $82, $fe
+sprite_animal_cat:
+	dc.b $3e, $41, $b8, $f5, $ed, $fd, $ff, $ff
+	dc.b $ff, $7e, $3e, $0a, $1f, $15, $1e, $12
+sprite_animal_dog:
+	dc.b $18, $1b, $db, $db, $df, $ff, $ff, $f9
+	dc.b $f6, $8d, $5f, $95, $9f, $3e, $36, $24
 
 sprite_lemming_1b:
 	dc.b $00, $00, $00, $00, $00, $30, $18, $18
