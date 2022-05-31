@@ -76,6 +76,18 @@ fx_init:	SUBROUTINE
 	CALL_CURRENT_BACKGROUND bg_inits
 	rts
 
+;;; Factorize position of sprites
+;;; X should contain sprite 0 location
+;;; Y should contain sprite 1 location
+position_sprites:	SUBROUTINE
+	txa
+	POSITION_SPRITE 0
+	tya
+	POSITION_SPRITE 1
+	sta WSYNC
+	sta HMOVE		; Commit sprites fine tuning
+	rts
+
 ;;; Vblank routine for 2 distinct sprites - same color
 	MAC TWO_DISTINCT_SPRITES_VBLANK
 	;; Load sprites (switch depending on pattern parity)
@@ -115,6 +127,79 @@ fx_init:	SUBROUTINE
 	lda main_timeline,X
 	and #$08
 	sta REFP1
+
+	;; Position sprites
+	lda patframe
+	lsr
+	clc
+	adc #33
+	tax
+	lda patframe
+	lsr
+	sta tmp0
+	lda #99
+	sec
+	sbc tmp0
+	tay
+	jsr position_sprites
+	ENDM
+
+	MAC LEMMING_VBLANK
+	lda framecnt
+	REPEAT 3
+	lsr
+	REPEND
+	and #$03
+	tax
+	;; Lemming sprite
+	lda lemming_sprite_timeline_lb,X
+	sta sprite_a_ptr
+	lda lemming_sprite_timeline_hb,X
+	sta sprite_a_ptr+1
+	lda lemming_sprite_timeline_lw,X
+	sta sprite_b_ptr
+	lda lemming_sprite_timeline_hw,X
+	sta sprite_b_ptr+1
+
+	;; Set colors
+	lda #$00
+	sta COLUP0
+	lda #$ff
+	sta COLUP1
+
+	lda patcnt
+	and #$01
+	bne .right_left_move
+.left_right_move:
+	;; no reflection
+	lda #$00
+	sta REFP0
+	sta REFP1
+	;; Sprites moving
+	lda patframe
+	lsr
+	clc
+	adc #33
+	tax
+	tay
+	bne .end_move		; unconditional
+.right_left_move:
+	;; reflection (for both sprites)
+	lda #$08
+	sta REFP0
+	sta REFP1
+	;; Sprites moving
+	lda patframe
+	lsr
+	sta tmp0
+	lda #99
+	sec
+	sbc tmp0
+	tax
+	tay
+.end_move:
+	;; Finalize sprites positioning
+	jsr position_sprites
 	ENDM
 
 fx_vblank:	SUBROUTINE
@@ -128,29 +213,11 @@ fx_vblank:	SUBROUTINE
 	lda main_timeline,X
 	and #$01
 	beq .two_distinct
-	;; Lemming code goes there
-	bne .main_fx_selected
+	LEMMING_VBLANK
+	jmp .sprites_selected
 .two_distinct:
 	TWO_DISTINCT_SPRITES_VBLANK
-.main_fx_selected:
-
-	;; Position sprites
-	lda patframe
-	lsr
-	clc
-	adc #33
-	POSITION_SPRITE 0
-	lda patframe
-	lsr
-	sta tmp0
-	lda #99
-	sec
-	sbc tmp0
-	POSITION_SPRITE 1
-
-	sta WSYNC
-	sta HMOVE		; Commit sprites fine tuning
-
+.sprites_selected:
 	CALL_CURRENT_BACKGROUND bg_vblanks
 	rts
 
@@ -206,7 +273,7 @@ bg_overscans:
 ;;; Bit 1 indicates whether a lemming should be displayed
 ;;; Bit 3 indicates whether sprites should be hardware reflected
 main_timeline:
-;	.byte #$01		; Lemming
+	.byte #$01		; Lemming
 	.byte #$00		; 2 sprites - no reflection
 	.byte #$08		; 2 sprites - with reflection
 	.byte #$08
@@ -214,29 +281,51 @@ main_timeline:
 
 ;;; Sprites to be used
 sprite_a_timeline_l:
-;	.byte #<sprite_lemming_1b
+	.byte #$00		; Unused - Lemming sprite animation table used instead
 	.byte #<sprite_hello
 	.byte #<sprite_tete_mr_0_lego
 	.byte #<sprite_tete_mr_2
 	.byte #<sprite_tete_mme_0
 sprite_a_timeline_h:
-;	.byte #>sprite_lemming_1b
+	.byte #$00
 	.byte #>sprite_hello
 	.byte #>sprite_tete_mr_0_lego
 	.byte #>sprite_tete_mr_2
 	.byte #>sprite_tete_mme_0
 sprite_b_timeline_l:
-;	.byte #<sprite_lemming_1w
+	.byte #$00
 	.byte #<sprite_folks
 	.byte #<sprite_tete_mme_0
 	.byte #<sprite_tete_mr_1_barbu
 	.byte #<sprite_tete_mme_1
 sprite_b_timeline_h:
-;	.byte #>sprite_lemming_1w
+	.byte #$00
 	.byte #>sprite_folks
 	.byte #>sprite_tete_mme_0
 	.byte #>sprite_tete_mr_1_barbu
 	.byte #>sprite_tete_mme_1
+
+;;; Lemmings sprites animation
+lemming_sprite_timeline_lb:
+	dc.b #<sprite_lemming_1b
+	dc.b #<sprite_lemming_2b
+	dc.b #<sprite_lemming_3b
+	dc.b #<sprite_lemming_4b
+lemming_sprite_timeline_hb:
+	dc.b #>sprite_lemming_1b
+	dc.b #>sprite_lemming_2b
+	dc.b #>sprite_lemming_3b
+	dc.b #>sprite_lemming_4b
+lemming_sprite_timeline_lw:
+	dc.b #<sprite_lemming_1w
+	dc.b #<sprite_lemming_2w
+	dc.b #<sprite_lemming_3w
+	dc.b #<sprite_lemming_4w
+lemming_sprite_timeline_hw:
+	dc.b #>sprite_lemming_1w
+	dc.b #>sprite_lemming_2w
+	dc.b #>sprite_lemming_3w
+	dc.b #>sprite_lemming_4w
 
 sprite_hello:
 	dc.b $ff, $20, $ff, $00, $ff, $a1, $00, $ff
@@ -270,3 +359,21 @@ sprite_lemming_1b:
 sprite_lemming_1w:
 	dc.b $00, $00, $00, $00, $30, $04, $02, $22
 	dc.b $20, $10, $1c, $08, $00, $00, $00, $00
+sprite_lemming_2b:
+	dc.b $00, $00, $00, $00, $00, $3c, $1c, $18
+	dc.b $08, $00, $10, $38, $28, $00, $00, $00
+sprite_lemming_2w:
+	dc.b $00, $00, $00, $00, $66, $00, $60, $20
+	dc.b $30, $1c, $08, $00, $00, $00, $00, $00
+sprite_lemming_3b:
+	dc.b $00, $00, $00, $00, $00, $3c, $18, $18
+	dc.b $08, $08, $20, $34, $18, $00, $00, $00
+sprite_lemming_3w:
+	dc.b $00, $00, $00, $00, $4c, $40, $00, $20
+	dc.b $10, $10, $1c, $08, $00, $00, $00, $00
+sprite_lemming_4b:
+	dc.b $00, $00, $00, $00, $00, $18, $18, $08
+	dc.b $08, $08, $00, $30, $3c, $00, $00, $00
+sprite_lemming_4w:
+	dc.b $00, $00, $00, $00, $18, $20, $00, $10
+	dc.b $10, $10, $1c, $08, $00, $00, $00, $00
