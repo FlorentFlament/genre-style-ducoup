@@ -80,13 +80,6 @@ fx_init:	SUBROUTINE
 	lda #$1
 	sta sprites_dir
 
-	;; Sprite0 is not reflected
-	lda #$00
-	sta REFP0
-	;; While sprite1 is
-	lda #$08
-	sta REFP1
-
 	;; Clear bg and pf colors
 	lda #$00
 	sta COLUPF
@@ -113,6 +106,29 @@ fx_vblank:	SUBROUTINE
 	sta sprite_b_ptr
 	lda sprite_b_timeline_h,X
 	sta sprite_b_ptr+1
+
+	;; Sprite flipping depends on timeline
+	lda reflection_timeline,X
+	sta tmp0
+
+	;; Sprite to flip depends on pattern parity
+	lda patcnt
+	and #$01
+	REPEAT 3
+	asl
+	REPEND
+	sta ptr
+
+	;; Sprite0 is not reflected
+	lda #$00
+	eor ptr			; Flip or not depending on pattern
+	and tmp0		; Flip or not depending on timeline
+	sta REFP0
+	;; While sprite1 is according to reflection timeline
+	lda #$08
+	eor ptr			; Flip or not depending on pattern
+	and tmp0		; Flip or not depending on timeline
+	sta REFP1
 
 	;; Position sprites
 	lda sprite0_pos
@@ -199,10 +215,10 @@ bg_overscans:
 	.word bg_columns_overscan - 1
 
 reflection_timeline:
-	.byte #0
-	.byte #1
-	.byte #1
-	.byte #1
+	.byte #$00
+	.byte #$08
+	.byte #$08
+	.byte #$08
 sprite_a_timeline_l:
 	.byte #<sprite_hello
 	.byte #<sprite_tete_mr_0_lego
