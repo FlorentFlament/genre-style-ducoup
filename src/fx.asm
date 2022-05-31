@@ -198,26 +198,38 @@ bg_overscans:
 	.word bg_lines_overscan - 1
 	.word bg_columns_overscan - 1
 
+reflection_timeline:
+	.byte #0
+	.byte #1
+	.byte #1
+	.byte #1
 sprite_a_timeline_l:
+	.byte #<sprite_hello
 	.byte #<sprite_tete_mr_0_lego
 	.byte #<sprite_tete_mr_2
 	.byte #<sprite_tete_mme_0
-	.byte #<sprite_tete_mr_0_lego
 sprite_a_timeline_h:
+	.byte #>sprite_hello
 	.byte #>sprite_tete_mr_0_lego
 	.byte #>sprite_tete_mr_2
 	.byte #>sprite_tete_mme_0
-	.byte #>sprite_tete_mr_0_lego
 sprite_b_timeline_l:
+	.byte #<sprite_folks
 	.byte #<sprite_tete_mme_0
 	.byte #<sprite_tete_mr_1_barbu
 	.byte #<sprite_tete_mme_1
-	.byte #<sprite_tete_mr_3
 sprite_b_timeline_h:
+	.byte #>sprite_folks
 	.byte #>sprite_tete_mme_0
 	.byte #>sprite_tete_mr_1_barbu
 	.byte #>sprite_tete_mme_1
-	.byte #>sprite_tete_mr_3
+
+sprite_hello:
+	dc.b $ff, $20, $ff, $00, $ff, $a1, $00, $ff
+	dc.b $01, $00, $ff, $01, $00, $ff, $81, $ff
+sprite_folks:
+	dc.b $fd, $87, $00, $fb, $04, $ff, $00, $80
+	dc.b $ff, $00, $ff, $81, $ff, $00, $05, $ff
 
 sprite_tete_mme_0:
 	dc.b $ed, $93, $ed, $93, $b9, $fd, $7e, $fe
