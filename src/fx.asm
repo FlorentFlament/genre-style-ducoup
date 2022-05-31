@@ -69,6 +69,7 @@ fx_init:	SUBROUTINE
 	lda #$00
 	sta timeline_i
 	sta current_bg
+
 	CALL_CURRENT_BACKGROUND bg_inits
 	rts
 
@@ -224,6 +225,8 @@ fx_vblank:	SUBROUTINE
 	sta REFP1
 	lda #$ff
 	sta COLUPF
+	;; load 40x40_title
+	PLAYFIELD_PICTURE_INIT 40x40_title
 	rts
 
 .sprites_n_bg:
@@ -239,36 +242,40 @@ fx_vblank:	SUBROUTINE
 	CALL_CURRENT_BACKGROUND bg_vblanks
 	rts
 
+;;; Use to build the vertscroll init subroutines
+	MAC PLAYFIELD_PICTURE_INIT
+	;; Copy 6 pointers i.e 12 bytes to slideshow_colbg memory address
+	ldy #11
+.loop:
+	lda slideshow_{1}_ptr,Y
+	sta slideshow_p0,Y
+	dey
+	bpl .loop
+	ENDM
 
 ;;; Display a 40x40 picture
-	MAC PLAYFIELD_PICTURE
-	ldx #0
-.bottom_loop:
-	ldy #5
-.inner_loop:
+	MAC PLAYFIELD_PICTURE_KERNEL
+	ldy #39
+.outer:
+	ldx #5
+.inner:
 	sta WSYNC
-	lda pf_test_40x40,X
+	lda (slideshow_p0),Y
 	sta PF0
-	lda pf_test_40x40+1,X
+	lda (slideshow_p1),Y
 	sta PF1
-	lda pf_test_40x40+2,X
+	lda (slideshow_p2),Y
 	sta PF2
-	SLEEP 6
-	lda pf_test_40x40+3,X
+	lda (slideshow_p3),Y
 	sta PF0
-	lda pf_test_40x40+4,X
+	lda (slideshow_p4),Y
 	sta PF1
-	lda pf_test_40x40+5,X
+	lda (slideshow_p5),Y
 	sta PF2
+	dex
+	bpl .inner
 	dey
-	bpl .inner_loop
-
-	txa
-	clc
-	adc #6
-	tax
-	cpx #(40*6)		; 40 lines picture
-	bcc .bottom_loop
+	bpl .outer
 
 	sta WSYNC
 	lda #$00
@@ -287,7 +294,7 @@ fx_kernel:	SUBROUTINE
 	and #$01
 	bne .sprites_n_bg
 .playfield:
-	PLAYFIELD_PICTURE
+	PLAYFIELD_PICTURE_KERNEL
 	rts
 .sprites_n_bg:
 	CALL_CURRENT_BACKGROUND bg_kernels
@@ -539,45 +546,3 @@ sprite_lemming_4b:
 sprite_lemming_4w:
 	dc.b $00, $00, $00, $00, $18, $20, $00, $10
 	dc.b $10, $10, $1c, $08, $00, $00, $00, $00
-
-pf_test_40x40:
-	dc.b $70, $00, $00, $00, $00, $f0
-	dc.b $70, $01, $07, $e0, $e0, $f0
-	dc.b $00, $01, $07, $e0, $c0, $f0
-	dc.b $00, $00, $04, $e0, $00, $f0
-	dc.b $00, $00, $00, $e0, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $38, $00, $00, $00
-	dc.b $00, $00, $f2, $70, $00, $00
-	dc.b $00, $01, $ff, $70, $00, $00
-	dc.b $00, $01, $01, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $f1, $c1, $40, $78, $13
-	dc.b $80, $fb, $e1, $40, $fd, $13
-	dc.b $80, $c3, $e1, $40, $e1, $13
-	dc.b $80, $c3, $e1, $40, $e1, $13
-	dc.b $80, $e3, $e1, $40, $f9, $1f
-	dc.b $80, $e3, $e1, $40, $7d, $1f
-	dc.b $80, $c3, $e1, $40, $05, $13
-	dc.b $80, $c3, $e1, $60, $05, $13
-	dc.b $80, $c3, $ef, $70, $fd, $13
-	dc.b $00, $c1, $c7, $30, $78, $13
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $fc, $f0, $00, $00
-	dc.b $00, $00, $fc, $f0, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00
-	dc.b $f0, $e0, $00, $00, $00, $fc
-	dc.b $f0, $e0, $00, $00, $00, $fc
-	dc.b $00, $60, $00, $00, $00, $0c
-	dc.b $00, $60, $00, $00, $00, $0c
-	dc.b $00, $60, $80, $10, $00, $0c
-	dc.b $00, $60, $80, $10, $00, $0c
-	dc.b $00, $60, $80, $10, $00, $0c
-	dc.b $00, $60, $80, $10, $00, $0c
-	dc.b $00, $60, $80, $10, $00, $0c

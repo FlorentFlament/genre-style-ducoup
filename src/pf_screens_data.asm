@@ -1,4 +1,3 @@
-	ALIGN 256 ; In case, but file should be included at the begining of a bank
 slideshow_40x40_title_p0:
 	dc.b $00, $00, $00, $00, $00, $00, $00, $00
 	dc.b $00, $00, $00, $00, $00, $00, $00, $00
@@ -36,28 +35,12 @@ slideshow_40x40_title_p5:
 	dc.b $0f, $00, $05, $05, $05, $05, $05, $05
 	dc.b $05, $07, $05, $05, $00, $0f, $00, $00
 slideshow_40x40_title_ptr:
-	dc.w slideshow_40x40_title_colbg
-	dc.w slideshow_40x40_title_colfg
 	dc.w slideshow_40x40_title_p0
 	dc.w slideshow_40x40_title_p1
 	dc.w slideshow_40x40_title_p2
 	dc.w slideshow_40x40_title_p3
 	dc.w slideshow_40x40_title_p4
 	dc.w slideshow_40x40_title_p5
-
-	ALIGN 256
-slideshow_40x40_title_colbg:
-	dc.b $00, $00, $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00, $00, $00
-	dc.b $00, $00, $00, $00, $00, $00, $00, $00
-slideshow_40x40_title_colfg:
-	dc.b $00, $00, $62, $62, $62, $62, $62, $00
-	dc.b $00, $0e, $0e, $0e, $0e, $0e, $00, $00
-	dc.b $b4, $b4, $b4, $b4, $b4, $00, $00, $00
-	dc.b $6a, $00, $6a, $6a, $6a, $6a, $6a, $6a
-	dc.b $6a, $6a, $6a, $6a, $00, $6a, $00, $00
 
 slideshow_40x40_lemmings_p0:
 	dc.b $00, $80, $40, $40, $e0, $40, $00, $c0
@@ -96,8 +79,6 @@ slideshow_40x40_lemmings_p5:
 	dc.b $11, $55, $bb, $00, $ff, $ff, $ff, $ff
 	dc.b $ff, $00, $f9, $f7, $fb, $fd, $f3, $00
 slideshow_40x40_lemmings_ptr:
-	dc.w slideshow_40x40_lemmings_colbg
-	dc.w slideshow_40x40_lemmings_colfg
 	dc.w slideshow_40x40_lemmings_p0
 	dc.w slideshow_40x40_lemmings_p1
 	dc.w slideshow_40x40_lemmings_p2
@@ -105,21 +86,7 @@ slideshow_40x40_lemmings_ptr:
 	dc.w slideshow_40x40_lemmings_p4
 	dc.w slideshow_40x40_lemmings_p5
 
-	ALIGN 256
-slideshow_40x40_lemmings_colbg:
-	dc.b $98, $98, $98, $98, $98, $98, $98, $98
-	dc.b $98, $98, $98, $98, $98, $98, $98, $98
-	dc.b $98, $98, $98, $98, $6a, $6a, $98, $98
-	dc.b $98, $98, $98, $6a, $98, $98, $98, $98
-	dc.b $98, $6a, $98, $98, $98, $98, $98, $6a
-slideshow_40x40_lemmings_colfg:
-	dc.b $00, $6a, $6a, $6a, $6a, $6a, $00, $6a
-	dc.b $6a, $6a, $6a, $6a, $00, $6a, $6a, $6a
-	dc.b $6a, $6a, $00, $00, $00, $00, $6a, $6a
-	dc.b $6a, $6a, $6a, $00, $6a, $6a, $6a, $6a
-	dc.b $6a, $00, $6a, $6a, $6a, $6a, $6a, $00
 
-	ALIGN 256 ; In case, but file should be included at the begining of a bank
 slideshow_40x40_rainbow_p0:
 	dc.b $00, $00, $90, $a0, $90, $b0, $c0, $00
 	dc.b $f0, $70, $70, $70, $f0, $00, $30, $50
@@ -157,8 +124,6 @@ slideshow_40x40_rainbow_p5:
 	dc.b $ff, $ff, $00, $e6, $fa, $e2, $ea, $f6
 	dc.b $00, $fe, $fd, $fd, $fd, $fd, $00, $00
 slideshow_40x40_rainbow_ptr:
-	dc.w slideshow_40x40_rainbow_colbg
-	dc.w slideshow_40x40_rainbow_colfg
 	dc.w slideshow_40x40_rainbow_p0
 	dc.w slideshow_40x40_rainbow_p1
 	dc.w slideshow_40x40_rainbow_p2
@@ -166,78 +131,46 @@ slideshow_40x40_rainbow_ptr:
 	dc.w slideshow_40x40_rainbow_p4
 	dc.w slideshow_40x40_rainbow_p5
 
-	ALIGN 256
-slideshow_40x40_rainbow_colbg:
-	dc.b $00, $c6, $00, $00, $00, $00, $00, $c6
-	dc.b $00, $00, $00, $00, $00, $98, $00, $00
-	dc.b $00, $00, $00, $56, $2c, $00, $00, $00
-	dc.b $00, $00, $24, $00, $00, $00, $00, $00
-	dc.b $64, $00, $00, $00, $00, $00, $64, $00
-slideshow_40x40_rainbow_colfg:
-	dc.b $00, $00, $c6, $c6, $c6, $c6, $c6, $00
-	dc.b $98, $98, $98, $98, $98, $00, $56, $56
-	dc.b $56, $56, $56, $00, $00, $2c, $2c, $2c
-	dc.b $2c, $2c, $00, $24, $24, $24, $24, $24
-	dc.b $00, $64, $64, $64, $64, $64, $00, $00
-
-	ALIGN 256 ; In case, but file should be included at the begining of a bank
-slideshow_40x40_rainbow_p0:
-	dc.b $00, $00, $90, $a0, $90, $b0, $c0, $00
-	dc.b $f0, $70, $70, $70, $f0, $00, $30, $50
-	dc.b $30, $70, $90, $00, $00, $30, $d0, $10
-	dc.b $50, $b0, $00, $70, $f0, $f0, $f0, $70
-	dc.b $00, $f0, $f0, $f0, $f0, $f0, $00, $00
-slideshow_40x40_rainbow_p1:
-	dc.b $00, $00, $bb, $77, $77, $77, $77, $00
-	dc.b $6f, $ae, $a6, $aa, $67, $00, $ac, $aa
-	dc.b $ac, $ae, $9e, $00, $00, $cc, $ab, $a8
-	dc.b $aa, $ad, $00, $76, $ab, $ab, $aa, $2b
-	dc.b $00, $ea, $da, $d9, $8b, $db, $00, $00
-slideshow_40x40_rainbow_p2:
-	dc.b $00, $00, $39, $d7, $13, $55, $b3, $00
-	dc.b $d4, $d7, $d4, $d5, $e6, $00, $e7, $5f
-	dc.b $4f, $57, $d7, $00, $00, $9d, $7d, $3d
-	dc.b $5d, $53, $00, $de, $ed, $ee, $c7, $ec
-	dc.b $00, $53, $5d, $51, $55, $9b, $00, $00
-slideshow_40x40_rainbow_p3:
-	dc.b $00, $00, $50, $50, $50, $50, $90, $00
-	dc.b $70, $b0, $b0, $b0, $b0, $00, $e0, $50
-	dc.b $50, $50, $60, $00, $00, $b0, $50, $50
-	dc.b $50, $b0, $00, $70, $b0, $b0, $b0, $b0
-	dc.b $00, $70, $f0, $f0, $70, $70, $00, $00
-slideshow_40x40_rainbow_p4:
-	dc.b $00, $00, $cc, $ab, $c8, $ea, $ed, $00
-	dc.b $b7, $56, $56, $dc, $d6, $00, $7c, $ba
-	dc.b $bc, $be, $b9, $00, $00, $ac, $ab, $a8
-	dc.b $aa, $9d, $00, $6e, $d5, $d5, $d5, $ed
-	dc.b $00, $77, $aa, $2a, $aa, $b6, $00, $00
-slideshow_40x40_rainbow_p5:
-	dc.b $00, $00, $9d, $7d, $bd, $dd, $33, $00
-	dc.b $ea, $eb, $f3, $fa, $fb, $00, $3d, $dd
-	dc.b $1d, $5d, $b3, $00, $00, $d5, $ff, $ff
-	dc.b $ff, $ff, $00, $e6, $fa, $e2, $ea, $f6
-	dc.b $00, $fe, $fd, $fd, $fd, $fd, $00, $00
-slideshow_40x40_rainbow_ptr:
-	dc.w slideshow_40x40_rainbow_colbg
-	dc.w slideshow_40x40_rainbow_colfg
-	dc.w slideshow_40x40_rainbow_p0
-	dc.w slideshow_40x40_rainbow_p1
-	dc.w slideshow_40x40_rainbow_p2
-	dc.w slideshow_40x40_rainbow_p3
-	dc.w slideshow_40x40_rainbow_p4
-	dc.w slideshow_40x40_rainbow_p5
-
-	ALIGN 256
-slideshow_40x40_rainbow_colbg:
-	dc.b $00, $c6, $00, $00, $00, $00, $00, $c6
-	dc.b $00, $00, $00, $00, $00, $98, $00, $00
-	dc.b $00, $00, $00, $56, $2c, $00, $00, $00
-	dc.b $00, $00, $24, $00, $00, $00, $00, $00
-	dc.b $64, $00, $00, $00, $00, $00, $64, $00
-slideshow_40x40_rainbow_colfg:
-	dc.b $00, $00, $c6, $c6, $c6, $c6, $c6, $00
-	dc.b $98, $98, $98, $98, $98, $00, $56, $56
-	dc.b $56, $56, $56, $00, $00, $2c, $2c, $2c
-	dc.b $2c, $2c, $00, $24, $24, $24, $24, $24
-	dc.b $00, $64, $64, $64, $64, $64, $00, $00
-
+slideshow_40x40_credits_p0:
+	dc.b $00, $00, $f0, $90, $00, $c0, $80, $90
+	dc.b $30, $70, $f0, $f0, $00, $f0, $f0, $f0
+	dc.b $f0, $f0, $00, $00, $00, $c0, $c0, $60
+	dc.b $60, $e0, $e0, $e0, $e0, $c0, $c0, $80
+	dc.b $00, $00, $00, $00, $00, $00, $00, $00
+slideshow_40x40_credits_p1:
+	dc.b $00, $00, $fe, $ed, $64, $27, $64, $e6
+	dc.b $33, $33, $f3, $ff, $00, $dd, $dd, $d5
+	dc.b $d5, $eb, $00, $00, $00, $00, $03, $07
+	dc.b $0e, $8c, $cc, $6c, $0c, $0c, $cc, $ee
+	dc.b $66, $00, $00, $00, $00, $00, $00, $00
+slideshow_40x40_credits_p2:
+	dc.b $00, $00, $fc, $d8, $c8, $c9, $4d, $0e
+	dc.b $8f, $1f, $3f, $7f, $00, $ac, $ab, $dd
+	dc.b $ae, $a9, $00, $00, $00, $30, $79, $1d
+	dc.b $0c, $0c, $1c, $7c, $0c, $0c, $38, $70
+	dc.b $00, $00, $26, $51, $51, $51, $26, $00
+slideshow_40x40_credits_p3:
+	dc.b $00, $00, $f0, $70, $30, $30, $20, $70
+	dc.b $f0, $d0, $80, $c0, $00, $30, $f0, $60
+	dc.b $b0, $70, $00, $00, $00, $00, $40, $60
+	dc.b $e0, $e0, $e0, $a0, $20, $20, $30, $30
+	dc.b $30, $00, $60, $50, $60, $40, $40, $00
+slideshow_40x40_credits_p4:
+	dc.b $00, $00, $ff, $3f, $5f, $d1, $50, $12
+	dc.b $32, $f3, $ff, $ff, $00, $dd, $5d, $4e
+	dc.b $5d, $65, $00, $00, $00, $0a, $8f, $8f
+	dc.b $cb, $da, $5a, $5a, $58, $dd, $dd, $cd
+	dc.b $80, $00, $60, $80, $e0, $a0, $40, $00
+slideshow_40x40_credits_p5:
+	dc.b $00, $00, $ff, $33, $93, $c3, $e3, $c2
+	dc.b $a6, $66, $e7, $ff, $00, $fe, $fe, $ff
+	dc.b $fe, $fe, $00, $00, $00, $00, $28, $38
+	dc.b $79, $59, $5d, $55, $55, $45, $4d, $6d
+	dc.b $6d, $00, $00, $00, $00, $00, $00, $00
+slideshow_40x40_credits_ptr:
+	dc.w slideshow_40x40_credits_p0
+	dc.w slideshow_40x40_credits_p1
+	dc.w slideshow_40x40_credits_p2
+	dc.w slideshow_40x40_credits_p3
+	dc.w slideshow_40x40_credits_p4
+	dc.w slideshow_40x40_credits_p5

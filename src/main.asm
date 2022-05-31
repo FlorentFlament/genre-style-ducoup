@@ -33,6 +33,7 @@ tmp0		DS.B	1
 	echo ""
 	echo "-DATA-"
 
+	INCLUDE "pf_screens_data.asm"
         INCLUDE "DuBledB_trackdata.asm"
 
 	echo ""
