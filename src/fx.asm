@@ -88,6 +88,24 @@ position_sprites:	SUBROUTINE
 	sta HMOVE		; Commit sprites fine tuning
 	rts
 
+;;; Compute sprites position when moving from left to right
+;;; Stored in A
+compute_left_right_position:	SUBROUTINE
+	lda patframe
+	lsr
+	clc
+	adc #33
+	rts
+
+compute_right_left_position:	SUBROUTINE
+	lda patframe
+	lsr
+	sta tmp0
+	lda #99
+	sec
+	sbc tmp0
+	rts
+
 ;;; Vblank routine for 2 distinct sprites - same color
 	MAC TWO_DISTINCT_SPRITES_VBLANK
 	;; Load sprites (switch depending on pattern parity)
@@ -129,17 +147,9 @@ position_sprites:	SUBROUTINE
 	sta REFP1
 
 	;; Position sprites
-	lda patframe
-	lsr
-	clc
-	adc #33
+	jsr compute_left_right_position
 	tax
-	lda patframe
-	lsr
-	sta tmp0
-	lda #99
-	sec
-	sbc tmp0
+	jsr compute_right_left_position
 	tay
 	jsr position_sprites
 	ENDM
@@ -176,10 +186,7 @@ position_sprites:	SUBROUTINE
 	sta REFP0
 	sta REFP1
 	;; Sprites moving
-	lda patframe
-	lsr
-	clc
-	adc #33
+	jsr compute_left_right_position
 	tax
 	tay
 	bne .end_move		; unconditional
@@ -189,12 +196,7 @@ position_sprites:	SUBROUTINE
 	sta REFP0
 	sta REFP1
 	;; Sprites moving
-	lda patframe
-	lsr
-	sta tmp0
-	lda #99
-	sec
-	sbc tmp0
+	jsr compute_right_left_position
 	tax
 	tay
 .end_move:
