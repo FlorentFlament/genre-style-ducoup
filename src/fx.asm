@@ -337,50 +337,57 @@ fx_overscan:	SUBROUTINE
 bg_inits:
 	.word bg_grid_init - 1
 	.word bg_columns_rasta_init - 1
-	.word bg_lines_init - 1
 	.word bg_columns_std_init - 1
+	.word bg_lines_init - 1
 bg_vblanks:
 	.word bg_grid_vblank - 1
 	.word bg_columns_slow_vblank - 1
-	.word bg_lines_vblank - 1
 	.word bg_columns_fast_vblank - 1
+	.word bg_lines_vblank - 1
 bg_kernels:
 	.word bg_grid_kernel - 1
 	.word bg_columns_kernel - 1
-	.word bg_lines_kernel - 1
 	.word bg_columns_kernel - 1
+	.word bg_lines_kernel - 1
 bg_overscans:
 	.word bg_grid_overscan - 1
 	.word bg_columns_overscan - 1
-	.word bg_lines_overscan - 1
 	.word bg_columns_overscan - 1
+	.word bg_lines_overscan - 1
 
 ;;; Each bit acts as an independant flag (1 for true, 0 for false)
 ;;; Bit 0 indicates whether a 40x40 screen should be displayed
 ;;; Bit 1 indicates whether a lemming should be displayed
 ;;; Bit 3 indicates whether sprites should be hardware reflected
 main_timeline:
-	.byte #$00
+	.byte #$00		; 40x40 title
 	.byte #$03		; Lemming
-	.byte #$00
-	.byte #$01		; 2 sprites - no reflection
+
+	.byte #$09		; 2 sprites - no reflection
+	.byte #$09		; 2 sprites - with reflection
+	.byte #$09
+	.byte #$09
+	.byte #$01
+	.byte #$09
+	.byte #$01
+	.byte #$01
+
+	.byte #$03		; Lemming
+	.byte #$00		; 40x40 textLem1
+	.byte #$03		; Lemming
+	.byte #$00		; 40x40 textLem2
+
+	.byte #$09		; 2 sprites - no reflection
 	.byte #$09		; 2 sprites - with reflection
 	.byte #$09
 	.byte #$09
 	.byte #$09
 	.byte #$09
-	.byte #$09
-	.byte #$09
-	.byte #$09
-	.byte #$03
-	.byte #$00
-	.byte #$03
-	.byte #$00
-	.byte #$09
-	.byte #$09
-	.byte #$09
-	.byte #$09
-	.byte #$03
+
+	.byte #$00		; 40x40 credits
+	.byte #$03		; Lemming
+	.byte #$00		; 40x40 fin
+
 	.byte #$80		; end of intro
 
 ;;; Sprites to be used
@@ -388,90 +395,114 @@ main_timeline:
 sprite_a_timeline_l:
 	.byte #<slideshow_40x40_title_ptr
 	.byte #$00
-	.byte #<slideshow_40x40_credits_ptr
-	.byte #<sprite_hello
+
 	.byte #<sprite_tete_mr_0_lego
+	.byte #<sprite_tete_mme_1
+	.byte #<sprite_tete_mme_2
 	.byte #<sprite_tete_mr_2
-	.byte #<sprite_tete_mme_0
-	.byte #<sprite_symbol_male
-	.byte #<sprite_symbol_male
-	.byte #<sprite_symbol_female
-	.byte #<sprite_symbol_male
-	.byte #<sprite_symbol_female
+	.byte #<sprite_hello
+	.byte #<sprite_animal_cat
+	.byte #<sprite_free
+	.byte #<sprite_coeur1
+
 	.byte #$00
 	.byte #<slideshow_40x40_lemmings_ptr
 	.byte #$00
 	.byte #<slideshow_40x40_rainbow_ptr
-	.byte #<sprite_tete_mr_0_lego
-	.byte #<sprite_tete_mr_2
-	.byte #<sprite_tete_mme_0
-	.byte #<sprite_animal_dog
+
+	.byte #<sprite_symbol_male
+	.byte #<sprite_symbol_nogenre
+	.byte #<sprite_symbol_male
+	.byte #<sprite_symbol_female
+	.byte #<sprite_symbol_male
+	.byte #<sprite_symbol_nogenre
+
+	.byte #<slideshow_40x40_credits_ptr
 	.byte #$00
+	.byte #<slideshow_40x40_pan_ptr
 sprite_a_timeline_h:
 	.byte #>slideshow_40x40_title_ptr
 	.byte #$00
-	.byte #>slideshow_40x40_credits_ptr
-	.byte #>sprite_hello
+
 	.byte #>sprite_tete_mr_0_lego
+	.byte #>sprite_tete_mme_1
+	.byte #>sprite_tete_mme_2
 	.byte #>sprite_tete_mr_2
-	.byte #>sprite_tete_mme_0
-	.byte #>sprite_symbol_male
-	.byte #>sprite_symbol_male
-	.byte #>sprite_symbol_female
-	.byte #>sprite_symbol_male
-	.byte #>sprite_symbol_female
+	.byte #>sprite_hello
+	.byte #>sprite_animal_cat
+	.byte #>sprite_free
+	.byte #>sprite_coeur1
+
 	.byte #$00
 	.byte #>slideshow_40x40_lemmings_ptr
 	.byte #$00
 	.byte #>slideshow_40x40_rainbow_ptr
-	.byte #>sprite_tete_mr_0_lego
-	.byte #>sprite_tete_mr_2
-	.byte #>sprite_tete_mme_0
-	.byte #>sprite_animal_dog
+
+	.byte #>sprite_symbol_male
+	.byte #>sprite_symbol_nogenre
+	.byte #>sprite_symbol_male
+	.byte #>sprite_symbol_female
+	.byte #>sprite_symbol_male
+	.byte #>sprite_symbol_nogenre
+
+	.byte #>slideshow_40x40_credits_ptr
 	.byte #$00
+	.byte #>slideshow_40x40_pan_ptr
 sprite_b_timeline_l:
 	.byte #$00
 	.byte #$00
-	.byte #$00
-	.byte #<sprite_folks
+
 	.byte #<sprite_tete_mme_0
 	.byte #<sprite_tete_mr_1_barbu
-	.byte #<sprite_tete_mme_1
+	.byte #<sprite_tete_mme_3
+	.byte #<sprite_tete_mr_3
+	.byte #<sprite_folks
+	.byte #<sprite_animal_dog
+	.byte #<sprite_love
+	.byte #<sprite_coeur2
+
+	.byte #$00
+	.byte #$00
+	.byte #$00
+	.byte #$00
+
 	.byte #<sprite_symbol_female
+	.byte #<sprite_symbol_nogenre
 	.byte #<sprite_symbol_male
 	.byte #<sprite_symbol_female
 	.byte #<sprite_symbol_nogenre
-	.byte #<sprite_symbol_nogenre
+	.byte #<sprite_symbol_female
+
 	.byte #$00
 	.byte #$00
-	.byte #$00
-	.byte #$00
-	.byte #<sprite_tete_mme_0
-	.byte #<sprite_tete_mr_1_barbu
-	.byte #<sprite_tete_mme_1
-	.byte #<sprite_animal_cat
 	.byte #$00
 sprite_b_timeline_h:
 	.byte #$00
 	.byte #$00
-	.byte #$00
-	.byte #>sprite_folks
+
 	.byte #>sprite_tete_mme_0
 	.byte #>sprite_tete_mr_1_barbu
-	.byte #>sprite_tete_mme_1
+	.byte #>sprite_tete_mme_3
+	.byte #>sprite_tete_mr_3
+	.byte #>sprite_folks
+	.byte #>sprite_animal_dog
+	.byte #>sprite_love
+	.byte #>sprite_coeur2
+
+	.byte #$00
+	.byte #$00
+	.byte #$00
+	.byte #$00
+
 	.byte #>sprite_symbol_female
+	.byte #>sprite_symbol_nogenre
 	.byte #>sprite_symbol_male
 	.byte #>sprite_symbol_female
 	.byte #>sprite_symbol_nogenre
-	.byte #>sprite_symbol_nogenre
+	.byte #>sprite_symbol_female
+
 	.byte #$00
 	.byte #$00
-	.byte #$00
-	.byte #$00
-	.byte #>sprite_tete_mme_0
-	.byte #>sprite_tete_mr_1_barbu
-	.byte #>sprite_tete_mme_1
-	.byte #>sprite_animal_cat
 	.byte #$00
 
 ;;; Lemmings sprites animation
@@ -503,12 +534,31 @@ sprite_folks:
 	dc.b $fd, $87, $00, $fb, $04, $ff, $00, $80
 	dc.b $ff, $00, $ff, $81, $ff, $00, $05, $ff
 
+sprite_free:
+	dc.b $00, $81, $85, $7e, $00, $81, $85, $7e
+	dc.b $00, $fa, $05, $ff, $00, $05, $05, $fe
+sprite_love:
+	dc.b $00, $fe, $01, $01, $00, $7e, $81, $7e
+	dc.b $00, $fe, $01, $fe, $00, $7e, $a1, $81
+sprite_coeur1:
+	dc.b $ff, $81, $08, $1c, $3e, $7b, $7f, $36
+	dc.b $00, $10, $28, $44, $82, $92, $6c, $00
+sprite_coeur2:
+	dc.b $10, $28, $44, $82, $92, $6c, $00, $08
+	dc.b $1c, $3e, $7b, $7f, $36, $00, $81, $ff
+
 sprite_tete_mme_0:
 	dc.b $ed, $93, $ed, $93, $b9, $fd, $7e, $fe
 	dc.b $fc, $f2, $ed, $c1, $d5, $e2, $7c, $38
 sprite_tete_mme_1:
 	dc.b $7e, $81, $99, $bd, $bd, $7d, $fa, $fc
 	dc.b $f2, $e1, $e5, $e1, $ea, $f1, $7e, $1c
+sprite_tete_mme_2:
+	dc.b $7e, $89, $89, $c9, $c9, $e2, $6a, $74
+	dc.b $e2, $cd, $c1, $d5, $e3, $7f, $3e, $1c
+sprite_tete_mme_3:
+	dc.b $7e, $f7, $9f, $97, $bf, $f7, $7e, $f4
+	dc.b $e2, $cd, $c1, $d5, $e3, $ff, $ff, $7e
 sprite_tete_mr_0_lego:
 	dc.b $ff, $ab, $d5, $7e, $3c, $42, $42, $99
 	dc.b $85, $81, $a5, $81, $e3, $cf, $ff, $7e
