@@ -371,6 +371,7 @@ main_timeline:
 	.byte #$09
 	.byte #$09
 	.byte #$09
+	.byte #$09
 	.byte #$03
 	.byte #$00
 	.byte #$03
@@ -395,7 +396,8 @@ sprite_a_timeline_l:
 	.byte #<sprite_symbol_male
 	.byte #<sprite_symbol_male
 	.byte #<sprite_symbol_female
-	.byte #<sprite_symbol_nogenre
+	.byte #<sprite_symbol_male
+	.byte #<sprite_symbol_female
 	.byte #$00
 	.byte #<slideshow_40x40_lemmings_ptr
 	.byte #$00
@@ -416,7 +418,8 @@ sprite_a_timeline_h:
 	.byte #>sprite_symbol_male
 	.byte #>sprite_symbol_male
 	.byte #>sprite_symbol_female
-	.byte #>sprite_symbol_nogenre
+	.byte #>sprite_symbol_male
+	.byte #>sprite_symbol_female
 	.byte #$00
 	.byte #>slideshow_40x40_lemmings_ptr
 	.byte #$00
@@ -438,6 +441,7 @@ sprite_b_timeline_l:
 	.byte #<sprite_symbol_male
 	.byte #<sprite_symbol_female
 	.byte #<sprite_symbol_nogenre
+	.byte #<sprite_symbol_nogenre
 	.byte #$00
 	.byte #$00
 	.byte #$00
@@ -458,6 +462,7 @@ sprite_b_timeline_h:
 	.byte #>sprite_symbol_female
 	.byte #>sprite_symbol_male
 	.byte #>sprite_symbol_female
+	.byte #>sprite_symbol_nogenre
 	.byte #>sprite_symbol_nogenre
 	.byte #$00
 	.byte #$00
