@@ -163,7 +163,23 @@
                     "patternindex": 15
                 },
                 {
-                    "gototarget": 40,
+                    "gototarget": -1,
+                    "patternindex": 0
+                },
+                {
+                    "gototarget": -1,
+                    "patternindex": 0
+                },
+                {
+                    "gototarget": -1,
+                    "patternindex": 0
+                },
+                {
+                    "gototarget": -1,
+                    "patternindex": 15
+                },
+                {
+                    "gototarget": 44,
                     "patternindex": 16
                 }
             ]
@@ -316,7 +332,19 @@
                 },
                 {
                     "gototarget": -1,
-                    "patternindex": 6
+                    "patternindex": 1
+                },
+                {
+                    "gototarget": -1,
+                    "patternindex": 1
+                },
+                {
+                    "gototarget": -1,
+                    "patternindex": 1
+                },
+                {
+                    "gototarget": -1,
+                    "patternindex": 2
                 },
                 {
                     "gototarget": -1,
@@ -331,7 +359,11 @@
                     "patternindex": 6
                 },
                 {
-                    "gototarget": 40,
+                    "gototarget": -1,
+                    "patternindex": 6
+                },
+                {
+                    "gototarget": 44,
                     "patternindex": 17
                 }
             ]

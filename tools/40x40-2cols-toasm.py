@@ -26,6 +26,7 @@ def get_colors(line):
         raise TooManyColorsException("More than 2 colors found on a line: {}".format(cols))
     bg = cols[0]
     fg = cols[1] if len(cols)>1 else None
+    print("*** {} {}".format(bg, fg))
     return (bg, fg)
 
 def get_playfields(bits):
@@ -93,7 +94,8 @@ class Slide:
 
         for i in range(40): # 40 lines
             ln = data[i*40 : (i+1)*40] # 40 pixels per line
-            bg, fg = get_colors(ln)
+            #bg, fg = get_colors(ln)
+            bg, fg = ((0, 0, 0), (255, 255, 255))
             bits = [c == fg for c in ln]
             pfs = get_playfields(bits)
             vcs_bg = best_palette_match(palette, bg)
