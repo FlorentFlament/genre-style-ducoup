@@ -126,8 +126,8 @@ class Slide:
 
     def dump_ptr(self):
         print("{}_ptr:".format(self.prefix))
-        print("\tdc.w {}_colbg".format(self.prefix))
-        print("\tdc.w {}_colfg".format(self.prefix))
+        #print("\tdc.w {}_colbg".format(self.prefix))
+        #print("\tdc.w {}_colfg".format(self.prefix))
         for i  in range(6):
             print("\tdc.w {}_p{}".format(self.prefix, i))
 
@@ -160,17 +160,17 @@ def main():
             print("*Error* while processing: {}".format(fn))
             print(e)
 
-    print("\tALIGN 256 ; In case, but file should be included at the begining of a bank")
+    #print("\tALIGN 256 ; In case, but file should be included at the begining of a bank")
     for s in slides:
         s.dump_pfs_all()
         s.dump_ptr()
         print()
 
-    for i,s in enumerate(slides):
-        if (i%3) == 0:
-            print("\tALIGN 256")
-        s.dump_colbg()
-        s.dump_colfg()
-        print()
+    #for i,s in enumerate(slides):
+    #    if (i%3) == 0:
+    #        print("\tALIGN 256")
+    #    s.dump_colbg()
+    #    s.dump_colfg()
+    #    print()
 
 main()
