@@ -220,13 +220,17 @@ fx_vblank:	SUBROUTINE
 	sta PF0
 	sta PF1
 	sta PF2
-	;; no reflection
-	sta REFP0
-	sta REFP1
+	;; no playfield reflection
+	sta CTRLPF
 	lda #$ff
 	sta COLUPF
-	;; load 40x40_title
-	PLAYFIELD_PICTURE_INIT 40x40_title
+
+	;; load playfield pointers
+	lda sprite_a_timeline_l,X
+	sta ptr
+	lda sprite_a_timeline_h,X
+	sta ptr+1
+	PLAYFIELD_PICTURE_INIT
 	rts
 
 .sprites_n_bg:
@@ -247,7 +251,7 @@ fx_vblank:	SUBROUTINE
 	;; Copy 6 pointers i.e 12 bytes to slideshow_colbg memory address
 	ldy #11
 .loop:
-	lda slideshow_{1}_ptr,Y
+	lda (ptr),Y
 	sta slideshow_p0,Y
 	dey
 	bpl .loop
@@ -358,14 +362,15 @@ bg_overscans:
 main_timeline:
 	.byte #$00
 	.byte #$03		; Lemming
+	.byte #$00
 	.byte #$01		; 2 sprites - no reflection
 	.byte #$09		; 2 sprites - with reflection
 	.byte #$09
 	.byte #$09
-	.byte #$01
-	.byte #$01
-	.byte #$01
-	.byte #$01
+	.byte #$09
+	.byte #$09
+	.byte #$09
+	.byte #$09
 	.byte #$03
 	.byte #$00
 	.byte #$03
@@ -378,9 +383,11 @@ main_timeline:
 	.byte #$80		; end of intro
 
 ;;; Sprites to be used
+;;; sprite_a_timeline also to be used to store 40x40 info
 sprite_a_timeline_l:
+	.byte #<slideshow_40x40_title_ptr
 	.byte #$00
-	.byte #$00
+	.byte #<slideshow_40x40_credits_ptr
 	.byte #<sprite_hello
 	.byte #<sprite_tete_mr_0_lego
 	.byte #<sprite_tete_mr_2
@@ -390,17 +397,18 @@ sprite_a_timeline_l:
 	.byte #<sprite_symbol_female
 	.byte #<sprite_symbol_nogenre
 	.byte #$00
+	.byte #<slideshow_40x40_lemmings_ptr
 	.byte #$00
-	.byte #$00
-	.byte #$00
+	.byte #<slideshow_40x40_rainbow_ptr
 	.byte #<sprite_tete_mr_0_lego
 	.byte #<sprite_tete_mr_2
 	.byte #<sprite_tete_mme_0
 	.byte #<sprite_animal_dog
 	.byte #$00
 sprite_a_timeline_h:
+	.byte #>slideshow_40x40_title_ptr
 	.byte #$00
-	.byte #$00
+	.byte #>slideshow_40x40_credits_ptr
 	.byte #>sprite_hello
 	.byte #>sprite_tete_mr_0_lego
 	.byte #>sprite_tete_mr_2
@@ -410,15 +418,16 @@ sprite_a_timeline_h:
 	.byte #>sprite_symbol_female
 	.byte #>sprite_symbol_nogenre
 	.byte #$00
+	.byte #>slideshow_40x40_lemmings_ptr
 	.byte #$00
-	.byte #$00
-	.byte #$00
+	.byte #>slideshow_40x40_rainbow_ptr
 	.byte #>sprite_tete_mr_0_lego
 	.byte #>sprite_tete_mr_2
 	.byte #>sprite_tete_mme_0
 	.byte #>sprite_animal_dog
 	.byte #$00
 sprite_b_timeline_l:
+	.byte #$00
 	.byte #$00
 	.byte #$00
 	.byte #<sprite_folks
@@ -439,6 +448,7 @@ sprite_b_timeline_l:
 	.byte #<sprite_animal_cat
 	.byte #$00
 sprite_b_timeline_h:
+	.byte #$00
 	.byte #$00
 	.byte #$00
 	.byte #>sprite_folks

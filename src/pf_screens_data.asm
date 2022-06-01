@@ -86,7 +86,6 @@ slideshow_40x40_lemmings_ptr:
 	dc.w slideshow_40x40_lemmings_p4
 	dc.w slideshow_40x40_lemmings_p5
 
-
 slideshow_40x40_rainbow_p0:
 	dc.b $00, $00, $90, $a0, $90, $b0, $c0, $00
 	dc.b $f0, $70, $70, $70, $f0, $00, $30, $50
