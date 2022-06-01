@@ -15,8 +15,8 @@
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
 
-; Song author: 
-; Song name: 
+; Song author: Glafouk
+; Song name: Glafouk
 
 ; @com.wudsn.ide.asm.hardware=ATARI2600
 
@@ -223,74 +223,98 @@ tt_pattern5:
         dc.b $51, $08, $2c, $53, $08, $31, $5a, $08
         dc.b $00
 
-; vide
+; gay0a
 tt_pattern6:
+        dc.b $2f, $6f, $2f, $6f, $34, $74, $57, $74
+        dc.b $2f, $6f, $2f, $6f, $34, $74, $5a, $74
+        dc.b $2c, $6c, $2c, $2b, $2c, $6c, $2d, $6d
+        dc.b $2d, $6d, $2d, $2c, $2d, $6d, $2d, $6d
+        dc.b $2f, $6f, $2f, $6f, $34, $74, $57, $74
+        dc.b $2f, $6f, $2f, $6f, $34, $74, $5f, $74
+        dc.b $2c, $6c, $2c, $2b, $2c, $6c, $2d, $6d
+        dc.b $2d, $6d, $30, $70, $2f, $6f, $6f, $6f
+        dc.b $00
+
+; vide
+tt_pattern7:
         dc.b $08, $08, $08, $08, $08, $08, $08, $08
         dc.b $08, $08, $08, $08, $08, $08, $08, $08
         dc.b $08, $08, $08, $08, $08, $08, $08, $08
         dc.b $00
 
 ; d0a
-tt_pattern7:
+tt_pattern8:
         dc.b $11, $08, $08, $08, $08, $08, $12, $08
         dc.b $08, $08, $08, $11, $11, $08, $08, $08
         dc.b $08, $08, $12, $08, $08, $08, $08, $11
         dc.b $00
 
 ; d0b
-tt_pattern8:
+tt_pattern9:
         dc.b $11, $08, $08, $08, $08, $08, $12, $08
         dc.b $08, $08, $08, $11, $11, $08, $08, $11
         dc.b $08, $08, $12, $08, $11, $08, $08, $11
         dc.b $00
 
 ; d+b0a
-tt_pattern9:
+tt_pattern10:
         dc.b $11, $8d, $08, $08, $08, $08, $12, $08
         dc.b $08, $08, $08, $08, $11, $8f, $08, $08
         dc.b $08, $08, $12, $92, $08, $08, $08, $11
         dc.b $00
 
 ; d+b0b
-tt_pattern10:
+tt_pattern11:
         dc.b $11, $8d, $08, $08, $08, $08, $12, $08
         dc.b $08, $08, $08, $08, $11, $92, $08, $08
         dc.b $08, $08, $12, $8f, $08, $08, $08, $11
         dc.b $00
 
 ; d+b0c
-tt_pattern11:
+tt_pattern12:
         dc.b $11, $8d, $08, $08, $08, $08, $12, $08
         dc.b $08, $08, $08, $11, $11, $8f, $08, $08
         dc.b $08, $08, $8d, $08, $08, $08, $08, $11
         dc.b $00
 
 ; d+b+mel0a
-tt_pattern12:
+tt_pattern13:
         dc.b $11, $8d, $08, $08, $08, $08, $12, $08
         dc.b $77, $73, $71, $08, $11, $8f, $08, $73
         dc.b $08, $08, $12, $92, $08, $7a, $08, $11
         dc.b $00
 
 ; d+b+mel0b
-tt_pattern13:
+tt_pattern14:
         dc.b $11, $8d, $08, $08, $08, $08, $12, $08
         dc.b $77, $73, $77, $08, $11, $92, $08, $7a
         dc.b $08, $08, $12, $8f, $08, $77, $08, $11
         dc.b $00
 
 ; d+b+mel0c
-tt_pattern14:
+tt_pattern15:
         dc.b $11, $8d, $08, $08, $08, $08, $12, $08
         dc.b $73, $71, $77, $11, $11, $8f, $08, $7d
         dc.b $08, $08, $8d, $08, $7a, $08, $7d, $11
         dc.b $00
 
 ; d+b+mel0d
-tt_pattern15:
+tt_pattern16:
         dc.b $11, $8d, $08, $08, $08, $08, $12, $08
         dc.b $73, $71, $6e, $11, $11, $8f, $08, $71
         dc.b $08, $08, $8d, $08, $73, $08, $77, $11
+        dc.b $00
+
+; gay0b
+tt_pattern17:
+        dc.b $11, $08, $7f, $08, $12, $08, $7f, $08
+        dc.b $11, $08, $7f, $08, $12, $08, $7f, $08
+        dc.b $11, $08, $78, $08, $12, $08, $78, $08
+        dc.b $11, $08, $77, $08, $12, $08, $77, $08
+        dc.b $11, $08, $7f, $08, $12, $08, $7f, $08
+        dc.b $11, $08, $7f, $08, $12, $08, $7f, $08
+        dc.b $11, $08, $78, $08, $12, $08, $78, $08
+        dc.b $11, $08, $7f, $08, $12, $12, $12, $12
         dc.b $00
 
 
@@ -315,13 +339,13 @@ tt_PatternPtrLo:
         dc.b <tt_pattern4, <tt_pattern5, <tt_pattern6, <tt_pattern7
         dc.b <tt_pattern8, <tt_pattern9, <tt_pattern10, <tt_pattern11
         dc.b <tt_pattern12, <tt_pattern13, <tt_pattern14, <tt_pattern15
-
+        dc.b <tt_pattern16, <tt_pattern17
 tt_PatternPtrHi:
         dc.b >tt_pattern0, >tt_pattern1, >tt_pattern2, >tt_pattern3
         dc.b >tt_pattern4, >tt_pattern5, >tt_pattern6, >tt_pattern7
         dc.b >tt_pattern8, >tt_pattern9, >tt_pattern10, >tt_pattern11
         dc.b >tt_pattern12, >tt_pattern13, >tt_pattern14, >tt_pattern15
-        
+        dc.b >tt_pattern16, >tt_pattern17        
 
 
 ; ---------------------------------------------------------------------
@@ -340,15 +364,17 @@ tt_SequenceTable:
         dc.b $00, $00, $00, $01, $02, $03, $02, $04
         dc.b $02, $03, $02, $05, $02, $03, $02, $04
         dc.b $02, $03, $02, $05, $00, $00, $00, $01
-        dc.b $00, $00, $00, $01, $8c
+        dc.b $00, $00, $00, $01, $00, $00, $00, $01
+        dc.b $06, $a8
 
         
         ; ---------- Channel 1 ----------
-        dc.b $06, $06, $07, $08, $09, $0a, $09, $0b
-        dc.b $09, $0a, $09, $0b, $09, $0a, $09, $0b
-        dc.b $09, $0a, $09, $0b, $0c, $0d, $0c, $0e
-        dc.b $0c, $0d, $0c, $0f, $0c, $0d, $0c, $0e
-        dc.b $0c, $0d, $0c, $0f, $b1
+        dc.b $07, $07, $08, $09, $0a, $0b, $0a, $0c
+        dc.b $0a, $0b, $0a, $0c, $0a, $0b, $0a, $0c
+        dc.b $0a, $0b, $0a, $0c, $0d, $0e, $0d, $0f
+        dc.b $0d, $0e, $0d, $10, $0d, $0e, $0d, $0f
+        dc.b $0d, $0e, $0d, $10, $07, $07, $07, $07
+        dc.b $11, $d2
 
 
         echo "Track size: ", *-tt_TrackDataStart

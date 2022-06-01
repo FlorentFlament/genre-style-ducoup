@@ -15,8 +15,8 @@
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
 
-; Song author: 
-; Song name: 
+; Song author: Glafouk
+; Song name: Glafouk
 
 ; @com.wudsn.ide.asm.hardware=ATARI2600
 
