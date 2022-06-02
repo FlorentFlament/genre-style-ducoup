@@ -3,13 +3,13 @@ PATTERN_FRAMES = 132		; 132 = 24 notes/pattern * (5.5) frames/note
 	                        ; 5 frames on odd and 6 frames on even patterns
 QUARTER_PATTERN = (PATTERN_FRAMES / 4)
 
-GRID_BG_COL = $8a 		; pink
+GRID_BG_COL = $88 		; pink
 GRID_PF_COL = $9a		; cyan
 COLUMNS_BG_COL = $6a 		; red
 COLUMNS_PF_COL = $b8		; blue
 COLUMNS_RASTA_BG_COL = $2e 		; yellow
 COLUMNS_RASTA_PF_COL = $58		; green
-LINES_BG_COL = $b6 		; blue
+LINES_BG_COL = $b8 		; blue
 LINES_PF_COL = $2e		; yellow
 
 ;;; Keep track of timeline index
